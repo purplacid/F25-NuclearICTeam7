@@ -71,9 +71,9 @@ float maxAccelMagnitude = 0.0; // Stores the maximum acceleration magnitude obse
 // --- Global Variables for RF Reception (RX480-E4 VT-only with simulated strength) ---
 volatile unsigned int rfPulseCount = 0;    // Incremented by interrupt (volatile as it's modified in ISR)
 unsigned long lastRfMeasurementTime = 0;   // Last time we updated RF strength
-const long rfMeasurementInterval = 1000;   // Measure RF signals every 1000 ms (1 second)
+const long rfMeasurementInterval = 500;   // Measure RF signals every 1000 ms (1 second)
 int rfSignalPercentage = 0;                // The calculated 'signal strength' (0-100%)
-const int MAX_PULSES_PER_INTERVAL = 2;    // *** TUNE THIS VALUE ***
+const int MAX_PULSES_PER_INTERVAL = 4;    // *** TUNE THIS VALUE ***
                                            // This is the expected max pulses in rfMeasurementInterval (1 second).
                                            // If your transmitter sends a pulse every ~100ms, then 10 pulses/sec is max.
                                            // Adjust this based on your transmitter's actual sending rate.
@@ -85,13 +85,14 @@ void rfPulseDetected();
 // --- Main Setup Function ---
 void setup() {
   Serial.begin(115200);
-  while (!Serial);
+  
+  lcd.begin(16, 2);
+  lcd.setRGB(colors[currentColor][0], colors[currentColor][1], colors[currentColor][2]);
+
   Serial.println("--- Sensor Hub Initializing ---");
 
   Wire.begin();
 
-  lcd.begin(16, 2);
-  lcd.setRGB(colors[currentColor][0], colors[currentColor][1], colors[currentColor][2]);
   lcd.print("Sensor Hub");
   lcd.setCursor(0, 1);
   lcd.print("Initializing...");

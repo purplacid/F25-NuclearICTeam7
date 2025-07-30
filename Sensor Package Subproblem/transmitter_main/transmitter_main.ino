@@ -14,8 +14,8 @@ void setup() {
 void loop() {
   // Simulate pressing and releasing the K1 button to send a distinct pulse
   digitalWrite(TRANSMIT_PIN, LOW);   // "Press" the button (pull K1 low)
-  delay(100);                        // Hold it for 100ms (more reliable for encoder)
+  delay(50);                        // Hold it for 100ms (more reliable for encoder)
   digitalWrite(TRANSMIT_PIN, HIGH);  // "Release" the button (pull K1 high)
-  delay(400);                        // Wait 400ms before "pressing" again. Total pulse cycle: 500ms.
+  delay(200);                        // Wait 400ms before "pressing" again. Total pulse cycle: 500ms.
                                      // This means 2 pulses per second (1000ms / 500ms).
 }
