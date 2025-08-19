@@ -22,55 +22,59 @@ Alternate Training Methods (Google Collab / Local Linux) :  https://www.youtube.
 
 **Python Interfacing for CV:**
 
-Note: It is strongly recommended to complete the computer vision challenge with a device that has a dedicated GPU.
+Note: It is strongly recommended to complete the computer vision challenge with a device that has a dedicated GPU.  
 Challenge can run with cpu-only devices, but training and execution speed can be much slower.
 
 **YOLO + OpenCV Environment Setup**
 
-1. Pick an IDE, Microsoft Visual Studio is used for this tutorial but IDEs like Pycharm could also work
-2. Create a new project/Clone this Repository
-3. Download Python 3.12.x (x can be any number) from: https://www.python.org/downloads/windows/
-4. Verify Python is installed: Open a new PowerShell after installation and type:
-   `py --list`
+1. Pick an IDE, Microsoft Visual Studio is used for this tutorial but IDEs like Pycharm could also work  
+2. Create a new project/Clone this Repository  
+3. Download Python 3.12.x (x can be any number) from: https://www.python.org/downloads/windows/  
+4. Verify Python is installed: Open a new PowerShell after installation and type:  
+   `py --list`  
    Python 3.12 should be listed like below:
 
-![alt text](loading_unloading_problem\Readme_Images\1a.png)
+![alt text](/loading_unloading_problem/Readme_Images/1a.png)
 
+---
 
 **Virtual Environment Setup:**
-1. From inside your IDE project, open a terminal window
-2. type: `cd [insert absolute path to your project locally]`
-3. type: `py -3.12 -m venv .venv`
-4. you should now see a folder called .venv in your project
 
-![alt text](loading_unloading_problem\Readme_Images\2a.png)
+1. From inside your IDE project, open a terminal window  
+2. type: `cd [insert absolute path to your project locally]`  
+3. type: `py -3.12 -m venv .venv`  
+4. you should now see a folder called .venv in your project  
 
-6. type: `.\.venv\Scripts\activate` to activate your virtual environment, your promt head should become like this below:
+![alt text](/loading_unloading_problem/Readme_Images/2a.png)
 
-![alt text](loading_unloading_problem\Readme_Images\3a.png)
+6. type: `.\.venv\Scripts\activate` to activate your virtual environment, your prompt head should become like this below:  
 
+![alt text](/loading_unloading_problem/Readme_Images/3a.png)
+
+---
 
 **Upgrade pip & Install YOLO:**
-1. in the same terminal, type: `python -m pip install --upgrade pip`
-   - if theres an output asking to download pip, follow instructions on that output
-2. Visit Pytorch: https://pytorch.org/get-started/locally/ 
 
-   IF your machine has a dedicated Nvidia GPU: 
-   - type: `nvidia--smi` and read your CUDA version. This should be the first line of output
-  
+1. in the same terminal, type: `python -m pip install --upgrade pip`  
+   - if there’s an output asking to download pip, follow instructions on that output  
+2. Visit Pytorch: https://pytorch.org/get-started/locally/  
+
+   IF your machine has a dedicated Nvidia GPU:  
+   - type: `nvidia--smi` and read your CUDA version. This should be the first line of output  
+
 3. On Pytorch website, select the following settings.
 
-![alt text](loading_unloading_problem\Readme_Images\4a.png)
+![alt text](/loading_unloading_problem/Readme_Images/4a.png)
 
-4. Change the CUDA version to whatever displayed on your nvidia-smi output. If your CUDA version has no exact match, choose the closest.( Ex: 12.6 can be chosen for CUDA version 12.5)
-   
-   IF your machine has no GPU: select CPU
-5. Copy the command output and input it into your IDE's terminal
-6. type: `pip install ultralytics opencv-python` to install openCV
+4. Change the CUDA version to whatever displayed on your nvidia-smi output. If your CUDA version has no exact match, choose the closest. (Ex: 12.6 can be chosen for CUDA version 12.5)  
 
+   IF your machine has no GPU: select CPU  
+5. Copy the command output and input it into your IDE's terminal  
+6. type: `pip install ultralytics opencv-python` to install openCV  
 
+---
 
-To verify your setup: Run main.py to check for any errors. Please do not hesitate to reach out to the support team for any setup trouble. 
+To verify your setup: Run main.py to check for any errors. Please do not hesitate to reach out to the support team for any setup trouble.
 
 ----
 ## How to Train Your Model
