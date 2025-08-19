@@ -73,8 +73,6 @@ Design a system to optimize truck routing given environmental challenges and on-
 **Example Solution Description:**  
 Code written to take map data and plan the most optimal route from several nuclear sites (marked blue) to the planned repository location (marked green). The system accounts for environmental obstacles and weather events that might make a route less desirable, such as a forest fire placed along the initial route (red marked area).  
 
-![Example Map of Route](route_example.png)  
-
 ---
 
 ## Next Steps  
