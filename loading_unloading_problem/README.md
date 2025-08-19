@@ -34,7 +34,7 @@ Challenge can run with cpu-only devices, but training and execution speed can be
    `py --list`
    Python 3.12 should be listed like below:
 
-   <img width="289" height="56" alt="image" src="https://github.com/user-attachments/assets/bc670688-b401-44ba-b2ba-d7d559515789" />
+![alt text](loading_unloading_problem\Readme_Images\1a.png)
 
 
 **Virtual Environment Setup:**
@@ -43,11 +43,11 @@ Challenge can run with cpu-only devices, but training and execution speed can be
 3. type: `py -3.12 -m venv .venv`
 4. you should now see a folder called .venv in your project
 
-<img width="164" height="58" alt="image" src="https://github.com/user-attachments/assets/3f057c2a-2770-4a0e-be7b-4b804f777d21" />
+![alt text](loading_unloading_problem\Readme_Images\2a.png)
 
 6. type: `.\.venv\Scripts\activate` to activate your virtual environment, your promt head should become like this below:
 
-<img width="253" height="31" alt="image" src="https://github.com/user-attachments/assets/095caf31-ea2e-4e5e-9e28-b980cb3ac24b" />
+![alt text](loading_unloading_problem\Readme_Images\3a.png)
 
 
 **Upgrade pip & Install YOLO:**
@@ -60,8 +60,7 @@ Challenge can run with cpu-only devices, but training and execution speed can be
   
 3. On Pytorch website, select the following settings.
 
-
-<img width="861" height="322" alt="image" src="https://github.com/user-attachments/assets/8df11917-d656-476b-b2e5-5c778c424c21" />
+![alt text](loading_unloading_problem\Readme_Images\4a.png)
 
 4. Change the CUDA version to whatever displayed on your nvidia-smi output. If your CUDA version has no exact match, choose the closest.( Ex: 12.6 can be chosen for CUDA version 12.5)
    
