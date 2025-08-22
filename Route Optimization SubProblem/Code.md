@@ -12,7 +12,7 @@ sites = gpd.read_file("nuclear_sites.geojson").to_crs(epsg=4326)
 print("Loaded site names:", list(sites["Name"]))
 
 # Load Map from saved file
-G = ox.load_graphml("canada_mapping.graphml")
+G = ox.load_graphml("ON_MB_Map_Data.graphml")
 
 # Fire Location and size
 fire_location = Point(-82.7569, 47.5939)
@@ -54,11 +54,6 @@ Chalk_River = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Chalk River"]
 
 CNL_Pinawa = ox.distance.nearest_nodes(G, sites[sites["Name"] == "CNL Pinawa"].geometry.iloc[0].x,
                                       sites[sites["Name"] == "CNL Pinawa"].geometry.iloc[0].y)
-
-Point_Lepreau = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Point Lepreau"].geometry.iloc[0].x,
-                                      sites[sites["Name"] == "Point Lepreau"].geometry.iloc[0].y)
-# Map
-m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
 
 # Calculate routes
 bruce_route = nx.astar_path(G, bruce, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
