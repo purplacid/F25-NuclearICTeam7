@@ -12,6 +12,6 @@ Hints and tutorials as you see fit after having run through the challenge to gau
 What files are here?
 GeoJson: contains coords and names for relevant nuclear sites and repository, needed for students  
 Code.md is my example code, should work so long as you have map data file, GeoJson, libraries  
-Optimized_Route_with_fire.html is just the output of my example code  
+Optimized_Route_with_fire.html is just the output of my example code, download and open w/ chrome
 map data file IS NOT HERE: its too big even zipped to be uploaded, find it in TEAMS. Talk to Chris, this has to be given to students before they start working on code. It is called ON_MB_Road_Data
 
