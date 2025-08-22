@@ -1,5 +1,4 @@
 ```python
-# Not for Students, just reference for coops
 import osmnx as ox
 import networkx as nx
 import geopandas as gpd
@@ -12,7 +11,7 @@ sites = gpd.read_file("nuclear_sites.geojson").to_crs(epsg=4326)
 print("Loaded site names:", list(sites["Name"]))
 
 # Load Map from saved file
-G = ox.load_graphml("ON_MB_Map_Data.graphml")
+G = ox.load_graphml("ON_MB_Road_Data.graphml")
 
 # Fire Location and size
 fire_location = Point(-82.7569, 47.5939)
@@ -55,6 +54,9 @@ Chalk_River = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Chalk River"]
 CNL_Pinawa = ox.distance.nearest_nodes(G, sites[sites["Name"] == "CNL Pinawa"].geometry.iloc[0].x,
                                       sites[sites["Name"] == "CNL Pinawa"].geometry.iloc[0].y)
 
+# Map
+m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
+
 # Calculate routes
 bruce_route = nx.astar_path(G, bruce, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
 bruce_route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in bruce_route]
@@ -67,10 +69,6 @@ folium.PolyLine(Darlington_route_coords, color="red", weight=5, tooltip="Darling
 Chalk_route = nx.astar_path(G, Chalk_River, ignace, heuristic=lambda a, b: haversine(a, b, G), weight="length")
 Chalk_route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in Chalk_route]
 folium.PolyLine(Chalk_route_coords, color="blue", weight=5, tooltip="Chalk River to Ignace").add_to(m)
-
-Point_Lepreau_route = nx.astar_path(G, Point_Lepreau, ignace, heuristic=lambda a, b: haversine(a, b, G), weight="length")
-Point_Lepreau_route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in Point_Lepreau_route]
-folium.PolyLine(Point_Lepreau_route_coords, color="orange", weight=5, tooltip="Point Lepreau to Ignace").add_to(m)
 
 CNL_Pinawa_route = nx.astar_path(G, CNL_Pinawa, ignace, heuristic=lambda a, b: haversine(a, b, G), weight="length")
 CNL_Pinawa_route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in CNL_Pinawa_route]
