@@ -15,3 +15,5 @@ What files are here?
 *Optimized_Route_with_fire.html* is just the output of my example code, download and open w/ chrome  
 *Road data file* IS NOT HERE: its too big even zipped to be uploaded, find it in TEAMS. Talk to Chris, this has to be given to students before they start working on code. It is called ON_MB_Road_Data
 
+Heres a visual i have for the map data I downloaded, might want to have to help see whats downloaded(ontario and part of manitoba to loop in CNL pinawa location) 
+<img width="772" height="642" alt="Visual_Representation_Road_Data_OSMNX" src="https://github.com/user-attachments/assets/01c8d208-d4f3-4b54-a25c-80dbcbd348fe" />
