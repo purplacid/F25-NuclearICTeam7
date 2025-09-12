@@ -1,0 +1,7 @@
+import atproto
+from atproto import Client
+
+client = Client()
+client.login('marbledmonsoon.bsky.social','aF9E5BQgx0rRfS')
+
+post = client.send_post('Hello world! I posted this via the Python SDK.')
