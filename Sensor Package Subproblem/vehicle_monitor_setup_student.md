@@ -54,10 +54,10 @@ Follow these specific instructions for each additional sensor:
 #### DFRobot BMX160 9-Axis IMU
 
 -   **Connection:**
--       VCC -> 5V
--       GND -> GND
--       SLA -> SLA
--       SDA -> SDA  
+     VCC -> 5V; 
+      GND -> GND
+     ; SLA -> SLA
+     ; SDA -> SDA  
 -   **Library:** Install `DFRobot_BMX160` via the Arduino IDE Library Manager.
 -   **Setup Notes:** This sensor provides accelerometer, gyroscope, and magnetometer data. It communicates via I2C. Ensure no other I2C devices on the same port have address conflicts (though unlikely for these modules).
 -   **Reference:** See [DFRobot Guide](https://wiki.dfrobot.com/BMX160_9-axis_Sensor_Module_SKU_SEN0373) for basic usage examples.
@@ -65,10 +65,10 @@ Follow these specific instructions for each additional sensor:
 #### Adafruit AHT20 Temperature and Humidity Sensor
 
 -   **Connection:**
--       VCC -> 5V
--       GND -> GND
--       SLA -> SLA
--       SDA -> SDA 
+VCC -> 5V; 
+      GND -> GND
+     ; SLA -> SLA
+     ; SDA -> SDA  
 -   **Setup Notes:** Provides accurate ambient temperature and humidity. Communicates via I2C.
 -   **Reference:** See [Adafruit AHT20 Guide](https://learn.adafruit.com/adafruit-aht20) for library usage.
 
