@@ -1,7 +1,7 @@
 # 🚛 Nuclear Loading & Unloading Monitoring Challenge
 Welcome aboard! 
 
-At Canadian National Laboratories (CNL), spent nuclear fuel is loaded into nuclear flasks and then transported from the generation site to the repository in Northern Ontario to a new waste site located in Ingrace. One of the most crucial moments of this process is loading and unloading the nuclear flasks. The challenge presented is making this process safer and more secure. More information can be found here. ([insert link](https://uofwaterloo.sharepoint.com/:w:/r/sites/tm-eng-engineeringideasclinic/_layouts/15/Doc.aspx?sourcedoc=%7B64B1861D-5FC8-454E-A262-28F26CA1BE14%7D&file=New%20Case%20Study.docx&action=default&mobileredirect=true)) 
+At Canadian National Laboratories (CNL), spent nuclear fuel is loaded into nuclear flasks and then transported from the generation site to the repository in Northern Ontario to a new waste site located in Ingrace. One of the most crucial moments of this process is loading and unloading the nuclear flasks. The challenge presented is making this process safer and more secure. More information can be found ([here.](https://uofwaterloo.sharepoint.com/:w:/r/sites/tm-eng-engineeringideasclinic/_layouts/15/Doc.aspx?sourcedoc=%7B64B1861D-5FC8-454E-A262-28F26CA1BE14%7D&file=New%20Case%20Study.docx&action=default&mobileredirect=true)) 
 
 Including: 
 - If the flask is secured to the truck
@@ -260,5 +260,6 @@ In Main.py, there are several functions that can be used to pick out specific ob
 
    
    
+
 
 
