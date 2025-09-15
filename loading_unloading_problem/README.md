@@ -1,7 +1,13 @@
 # 🚛 Nuclear Loading & Unloading Monitoring Challenge
-Welcome abroad! 
+Welcome aboard! 
 
-This project focuses on monitoring the loading and unloading of spent nuclear fuel during its transport from the generation site to the repository in Northern Ontario.
+At Canadian National Laboratories (CNL), spent nuclear fuel is loaded into nuclear flasks and then transported from the generation site to the repository in Northern Ontario to a new waste site located in Ingrace. One of the most crucial moments of this process is loading and unloading the nuclear flasks. The challenge presented is making this process safer and more secure. More information can be found here. ([insert link](https://uofwaterloo.sharepoint.com/:w:/r/sites/tm-eng-engineeringideasclinic/_layouts/15/Doc.aspx?sourcedoc=%7B64B1861D-5FC8-454E-A262-28F26CA1BE14%7D&file=New%20Case%20Study.docx&action=default&mobileredirect=true)) 
+
+Including: 
+- If the flask is secured to the truck
+- If the state of the flask
+- The number of people in the loading zone
+- authorization of the people
 
 The transfer of a nuclear flask containing spent fuel is one of the most vulnerable stages in the transportation process. Even with strict oversight, accidents can still occur. Your challenge is to design a solution that enhances safety and reliability by improving how the loading and unloading process is monitored.
 
@@ -27,7 +33,7 @@ Challenge can run with cpu-only devices, but training and execution speed can be
 
 **YOLO + OpenCV Environment Setup**
 
-1. Pick an IDE, Microsoft Visual Studio is used for this tutorial but IDEs like Pycharm could also work  
+1. Pick an IDE, Microsoft Visual Studio is used for this tutorial, but IDEs like PyCharm could also work  
 2. Create a new project/Clone this Repository  
 3. Download Python 3.12.x (x can be any number) from: https://www.python.org/downloads/windows/  
 4. Verify Python is installed: Open a new PowerShell after installation and type:  
@@ -254,4 +260,5 @@ In Main.py, there are several functions that can be used to pick out specific ob
 
    
    
+
 
