@@ -14,7 +14,7 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json
 client = gspread.authorize(credentials)
 
 # Open the Google Sheet
-sheet = client.open('Your Google Sheet Name').sheet1
+sheet = client.open('Nuclear_challenge_data').sheet1
 
 # Fetch the first row of data
 first_row = sheet.row_values(1)
