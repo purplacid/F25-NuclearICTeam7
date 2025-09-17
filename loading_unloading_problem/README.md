@@ -83,17 +83,24 @@ Terminology:
 
 Class - types of objects that will be detected in the vision model (Eg.Trees, Flowers, Cat)
 
-Datasets -
+Datasets - The set of data that bases the system output on
 
-   Training Set- images used to fit the model (largest split)
+   Training Set- images used to fit the model and clarify distinguished elements between classes (largest split)
 
-   Valid - images used during training to tune/early-stop
+   Valid - Images used during training to tune/early-stop
 
-   Test -  images held out to measure final performance
+   Test -  Images held out to measure final performance
 
-Label - tells the model in dataset what object is what
+Label - tTlls the model in the dataset what object is what 
 
-Epoch - basically a round of training. the more rounds your run, the more accurate your model can be
+Epoch - The round of trainning. The more rounds you run, the more accurate your model can be based on the provided images of the data set
+
+Imgz - the size of the photos (L X W) in pixels
+
+Batch - The number of photos processed before updating the weights of common characteristics 
+
+workers - The number of threads dedicated to trainning the data
+
 
 
 ### Collect Training Datasets
@@ -252,6 +259,7 @@ In Main.py, there are several functions that can be used to pick out specific ob
 
    
    
+
 
 
 
