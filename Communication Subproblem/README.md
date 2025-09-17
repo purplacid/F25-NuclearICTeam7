@@ -4,13 +4,17 @@
 
 * run through instructions and implement suggested changes
 
-* Refine project readmes 
-
 * Bluesky bot template 
 
 * troubleshooting 
+    * Looker studio connection
+    * Get others to user test it 
+    * Github action (?)
 
-* Generate more fake data
+* Generate more fake data 
+    * History 
+    * Local authorities in Location sheet 
+    * Export
 
 
 ## Problem Description 
