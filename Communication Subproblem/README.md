@@ -2,17 +2,15 @@
 
 ## For me: todos
 
-* run through instructions and note down suggested changes 
-
-* Implement suggested changes 
+* run through instructions and implement suggested changes
 
 * Refine project readmes 
 
 * Bluesky bot template 
 
-* Api task - specification 
-
 * troubleshooting 
+
+* Generate more fake data
 
 
 ## Problem Description 
@@ -32,5 +30,9 @@ personal account: https://docs.bsky.app/docs/get-started
 bot: https://docs.bsky.app/docs/starter-templates/bots
 
 ## Resources 
+
+## Troubleshooting 
+### Google sheets API 
+### Looker studio
 
 
