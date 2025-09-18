@@ -47,7 +47,7 @@ We have supplied the map data on Learn to be used to create your maps and routes
 Make sure to keep all the files used in this project in the same folder. 
 
 First, we will need a .geojson file to hold site names and coordinates which can be made as follows:  
-![GeoJSON file](geojson.png)  
+![GeoJSON file](/Route_Optimization_Subproblem/images/geojson.png)  
 A list of nuclear sites and their coordinates has been provided.
 Ensure that this new file is also in your project folder.
 
