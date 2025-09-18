@@ -2,6 +2,8 @@
 
 ## For me: todos
 
+* Update main front page README
+
 * run through instructions and implement suggested changes
 
 * Bluesky bot template 
