@@ -34,8 +34,6 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 ### 2.2 Setting up social media connection
 * connect to your platform's api and send the alerts there  
 for bluesky: 
-personal account: https://docs.bsky.app/docs/get-started
-bot: https://docs.bsky.app/docs/starter-templates/bots
 
 ### 2.3 Write your code 
 * Find a way to parse the data and generate alerts based on it 
@@ -49,4 +47,10 @@ Github workflow explanation blah blah.
 
 ## Troubleshooting 
 
+
+## Citations
+
+https://medium.com/@thibautdonis1998/automating-your-workflows-on-a-schedule-github-actions-cron-fd7e662083c6
+personal account: https://docs.bsky.app/docs/get-started
+https://spreadsheetpoint.com/connect-python-and-google-sheets-15-minute-guide/
 
