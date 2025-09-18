@@ -39,6 +39,12 @@ jobs:
           python -m pip install --upgrade pip 
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Create the service_accounts.json file that stores Google APi credentials 
+      # It's in the repository's secrets and not in the public repo
+      - name: Write service account JSON
+        run: |
+          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > service_accounts.json
+
       # Run the bot's script 
       - name: Run Bot Script 
         run: |
