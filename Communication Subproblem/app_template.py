@@ -4,15 +4,18 @@ from google.oauth2.service_account import Credentials
 from atproto import Client
 
 # Define the scope
-scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+scopes = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
 
 # Authenticate Google Sheets with credentials
 
-creds = Credentials.from_service_account_file("service_account.json", scopes=scopes)
+creds = Credentials.from_service_account_file("service_accounts.json", scopes=scopes)
 gc = gspread.authorize(creds)
 
 # Open the Google Sheet
-sheet = client.open('Nuclear_challenge_data').sheet1
+sheet = gc.open('Nuclear_challenge_data').sheet1
 
 # bluesky connection
 client = Client()
@@ -22,15 +25,15 @@ client.login('marbledmonsoon.bsky.social','aF9E5BQgx0rRfS')
 second_row = sheet.row_values(2)
 print(f"2nd row of data: {second_row}")
 
-alert_message = null
-status = null
+alert_message = "alert"
+status = "status"
 
 # TODO: Detect crisis mode if unresolved, unscheduled stop
 
 # TODO: If message changes post right away; else, post every 15 min
 
 # TODO: Translate coordinates to general location 
-location = null
+location = "location"
 
 # Public post
 post = client.send_post('Major alert for ' + location + ' residents: ' + alert_message + '.' + 
