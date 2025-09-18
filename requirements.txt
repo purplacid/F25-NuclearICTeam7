@@ -1,3 +1,4 @@
 # These requirements are for the Communication Subproblem
 atproto 
 gspread
+google-auth
