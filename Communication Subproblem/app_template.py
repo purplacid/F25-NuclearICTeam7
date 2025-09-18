@@ -1,17 +1,15 @@
 import gspread
 import atproto
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from atproto import Client
 
 # Define the scope
-scope = [
-    'https://www.googleapis.com/auth/spreadsheets',
-    'https://www.googleapis.com/auth/drive'
-]
+scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 
 # Authenticate Google Sheets with credentials
-credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
-client = gspread.authorize(credentials)
+
+creds = Credentials.from_service_account_file("service_account.json", scopes=scopes)
+gc = gspread.authorize(creds)
 
 # Open the Google Sheet
 sheet = client.open('Nuclear_challenge_data').sheet1
