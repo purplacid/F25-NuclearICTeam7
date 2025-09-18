@@ -4,20 +4,19 @@
 
 * Update main front page README
 
-* run through instructions and implement suggested changes
+* Update subproblem README
+   * run through instructions and implement suggested changes
 
-* Bluesky bot template 
+* Bluesky bot template finish
 
-* troubleshooting 
-    * Looker studio connection
-    * Get others to user test it 
-    * Github action (?)
+* Make ideasclinic bluesky account  
 
 * Generate more fake data 
     * History 
     * Local authorities in Location sheet 
     * Export
 
+* get others 
 
 ## Problem Description 
 
