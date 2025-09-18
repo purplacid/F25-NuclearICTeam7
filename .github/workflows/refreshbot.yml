@@ -43,8 +43,9 @@ jobs:
       # It's in the repository's secrets and not in the public repo
       - name: Write service account JSON
         run: |
-          printf '%s' "${{ secrets.GOOGLE_CREDENTIALS }}" > service_accounts.json
-
+            cat <<EOF > service_accounts.json
+            ${{ secrets.GOOGLE_CREDENTIALS }}
+            EOF
       # Run the bot's script 
       - name: Run Bot Script 
         run: |
