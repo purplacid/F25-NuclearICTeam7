@@ -3,9 +3,23 @@ Welcome aboard!
 
 At Canadian National Laboratories (CNL), spent nuclear fuel is loaded into nuclear flasks and then transported from the nuclear power plant where it is generated, to a new nuclear waste repository in Northern Ontario located in Ingrace. Even with strict oversight, accidents can still occur. A critical moment during the transportation process is the loading and unloading of the nuclear flasks, which store the unused nuclear fuel. The challenge presented is making this process safe and more secure. If not handled carefully, exposed nuclear fuel can cause serious health issues to those working with it, and due to its unique qualities, it may be subject to theft. Ensuring that only the correct number of authorised personnel is working with the fuel at a time, as well as ensuring that the nuclear flask is in good condition, is imperative to transporting nuclear waste. More information on this sub-problem can be found [here.](https://uofwaterloo.sharepoint.com/:w:/r/sites/tm-eng-engineeringideasclinic/_layouts/15/Doc.aspx?sourcedoc=%7B64B1861D-5FC8-454E-A262-28F26CA1BE14%7D&file=New%20Case%20Study.docx&action=default&mobileredirect=true)
 
+ **your challange:** Design a system to enable a safer nuclear transfer process between vehicles that minimizes the possibility of material tampering and unauthorized intrusion to the transfer site.  
+
+ **Minimum Requirement for Solution:**
+ 
+ - Determine if there are unauthorized personnel, or if there are too many people in the loading/unloading area.  
+
+ - Check the status of the nuclear flask to see if there is a spill, or mechanical failure. 
+
+ - Check to see if the flask is secured to the truck.  
+
+ 
+
 ---------------------------------------------------------------------
 
 ## Reference Material
+
+
 Ultralytics Yolo: https://docs.ultralytics.com/
 
 Roboflow : https://universe.roboflow.com/
@@ -259,6 +273,7 @@ In Main.py, there are several functions that can be used to pick out specific ob
 
    
    
+
 
 
 
