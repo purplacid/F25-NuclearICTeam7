@@ -101,11 +101,11 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 
     # Open the Google Sheet
     sheet = gc.open('Your_Google_Sheet').sheet1
-
     ```
-
+    Now you can refer to specific columns, tables, rows, etc. Read more about how to use gspread [here](https://docs.gspread.org/en/latest/). 
 
 #### 2.2 Setting up social media connection
+1. Start by reading the documentations of 
 connect to your platform's api and send the alerts there  
 
 #### 2.3 Write your code 

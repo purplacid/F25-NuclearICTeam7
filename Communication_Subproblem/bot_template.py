@@ -1,6 +1,7 @@
 import gspread
 import atproto
 from google.oauth2.service_account import Credentials
+from .credentials.json import *
 from atproto import Client
 
 # Define the scope
