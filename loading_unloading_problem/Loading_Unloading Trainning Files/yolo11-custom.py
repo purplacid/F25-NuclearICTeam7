@@ -5,7 +5,7 @@ import cv2
 
 
 #path to your data.yaml file
-training_set = r"C:\Users\jliu0\Downloads\lego.v1i.yolov11\data.yaml"
+training_set = r"Enter Direct path to data.yaml here EX: C:User/Me/data.ymal "
 
 
 def main():
@@ -26,3 +26,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
