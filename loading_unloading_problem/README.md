@@ -29,6 +29,8 @@ How to interpret performance metrics of computer vision model: https://docs.ultr
 Alternate Training Methods (Google Collab / Local Linux) :  https://www.youtube.com/watch?v=etjkjZoG2F0&t=769s
 
 ----------------------------------------------------------------------
+## OPEN CV TUTUORIAL :
+----------------------------------------------------------------------
 
 ## Project Setup
 
@@ -372,6 +374,7 @@ def is_moving(result, target_class_name, dist_thresh_px):
 
    
    
+
 
 
 
