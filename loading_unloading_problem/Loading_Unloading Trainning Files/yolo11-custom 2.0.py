@@ -5,7 +5,7 @@ import cv2
 
 
 #path to your data.yaml file
-training_set = r"C:\Users\macph\Documents\Nuclear-Dessign-Project\Nuclear Packing Problem 2.0\NuclearICDatabase.v2i.yolov11\data.yaml"
+training_set = r"[enter path to data.yamal"
 
 
 def main():
@@ -26,3 +26,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
