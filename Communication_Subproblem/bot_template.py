@@ -1,7 +1,7 @@
 import gspread
 import atproto
+import json
 from google.oauth2.service_account import Credentials
-from .credentials.json import *
 from atproto import Client
 
 # Define the scope
@@ -18,9 +18,17 @@ gc = gspread.authorize(creds)
 # Open the Google Sheet
 sheet = gc.open('Nuclear_challenge_data').sheet1
 
-# bluesky connection
+# Bluesky Connection
+# Load in credentials from credentials.json
+with open("credentials.json", "r") as f: 
+    creds = json.load(f)
+
+username = creds["BLUESKY_USERNAME"]
+password = creds["BLUESKY_PASSWORD"]
+
+# Authorize
 client = Client()
-client.login('marbledmonsoon.bsky.social','aF9E5BQgx0rRfS')
+client.login(username, password)
 
 # TODO: while loop: fetch the most recent status based on time
 second_row = sheet.row_values(2)
