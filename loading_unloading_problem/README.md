@@ -203,6 +203,10 @@ Deep dive into performance metrics can be found at: https://docs.ultralytics.com
 ## Model Deployment
 The following code snippets can be used to deploy your trained model with live video feed. Just point your webcam to the scene and start monitoring: 
 
+![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challanger%20person%20and%20flask%20.png)
+![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challange%20person.png)
+
+
 ```python
 import cv2
 from ultralytics import YOLO
@@ -273,6 +277,7 @@ In Main.py, there are several functions that can be used to pick out specific ob
 
    
    
+
 
 
 
