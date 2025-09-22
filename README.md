@@ -30,7 +30,7 @@ Your team at **CNL** has been tasked to design the **various monitoring systems*
 
 Your Task is to develop a solution to one or more of these subproblems that withstands CNL's expectations and standards. You may also find a **unique way to combine solutions** across multiple areas. Remember: **time is of the essence!** Top scientists at CNL will be arriving in **two days** to assess your results.
 
-Please remember to work pragmatically and safely. For general guidelines, please review 2618_questions_and_answers_ _safe_and_secure_transporta.pdf 
+Please remember to work pragmatically and safely. For general guidelines, please review **2618_questions_and_answers_ _safe_and_secure_transporta.pdf** 
 
 
 ---
