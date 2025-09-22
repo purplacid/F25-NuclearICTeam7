@@ -50,23 +50,23 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 
 #### Setting up Google Sheet API 
 1.  Set up Google Cloud  
-    i. Log into [Google Cloud](https://cloud.google.com/). Do this by following the link, scrolling down, and clicking "Go to my console."  
+    i. Log into [Google Cloud](https://cloud.google.com/). Do this by following the link, scrolling down, and clicking **"Go to my console."**  
 
-    ii. In the search bar, search and enable Google Sheets API (Marketplace).  
+    ii. In the search bar, search and enable **Google Sheets API (Marketplace)**.  
 
-    iii. In the left sidebar, navigate to "APIs and Services" > "Credentials."  
+    iii. In the left sidebar, navigate to **"APIs and Services"** > **"Credentials."**  
 
 2. Create a service account  
-    i. On the "Credentials" page, click "Create Credentials" > "Service Account."  
+    i. On the **"Credentials"** page, click **"Create Credentials"** > **"Service Account."**  
 
-    ii. Name the service account and click "Create and Continue."  
+    ii. Name the service account and click **"Create and Continue."**  
 
     iii. Download the JSON key file for the service account. Rename it to `service_account.json`. Move it into the same folder as your Python script for now. 
 
 3. Connect to Google Sheets  
     i. Open your Google Sheet containing all your data. 
 
-    ii. Click the "Share" button and add the service account email address (`"client_email"`) found in your `service_account.json`.
+    ii. Click the **"Share"** button and add the service account email address (`"client_email"`) found in your `service_account.json`.
 
     iii. Grant Editor permissions to the email. 
 
@@ -93,12 +93,12 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
     # Open the Google Sheet
     sheet = gc.open('Your_Google_Sheet').sheet1
     ```
-    Now you can refer to specific columns, tables, rows, etc. Read more about how to use gspread [here](https://docs.gspread.org/en/latest/). 
+    Now you can refer to specific columns, tables, rows, and more from your Google Sheets. Read more about how to use gspread [here](https://docs.gspread.org/en/latest/). 
 
 #### Setting up social media connection
-1. Start by reading the developer's documentation for your social media platofrm of choice. The documentation for Bluesky is available [here](https://docs.bsky.app/).
+1. Start by reading and understanding the developer's documentation for your social media platofrm of choice. The documentation for Bluesky is available [here](https://docs.bsky.app/).
 
-2. Set up a new account save the credentials in a ``credentials.json`` file. Move that file into a ``secrets`` subfolder.
+2. Set up a new account and save the credentials in a ``credentials.json`` file. Move that file into a ``secrets`` subfolder.
     ``` json
     {
     "BLUESKY_USERNAME": "username",
@@ -128,15 +128,83 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
     client.login(username, password)
     ```
 #### Write your code 
-Find a way to parse the data and generate alerts based on it 
 
-#### Deploy via Github Action
-Starter guide: https://www.youtube.com/watch?v=mFFXuXjVgkU
 
-iv. Go to the Github repository of your project. Go to "Settings" > "Security" > "Secrets and variables" > Actions.  
+#### Automate via Github Action
+We are going to use Github Action for a no-cost way of deploying the "bot". Github Action is a powerful tool that can automate creating new packages, deploying apps, listening for events and conditionally performing actions based on them, and more. [Here's](https://www.youtube.com/watch?v=mFFXuXjVgkU) a great introduction video, but today we are simply using it to run the bot's script every 15 minute. 
 
-v. In "Actions secrets and variables," click "New repository secret" and paste the content of your service_account.json inside. Rename the secret to GOOGLE_CREDENTIALS and save.
+1. Go to the Github repository of your project. Go to **"Settings"** > **"Security"** > **"Secrets and variables"** > **Actions**.  
 
+2. In the **"Actions secrets and variables,"** tab, click **"New repository secret"** and paste the content of your ``service_account.json`` inside. Rename the secret to GOOGLE_CREDENTIALS and save.
+
+3. Go back to your repository and create a ``.github`` folder. 
+
+4. Create another ``workflows`` subfolder inside. 
+
+5. Create a new YAML (.yml) file that will contain the content of your automation script. We have provided a starting script that will simply run the bot script every 15 minute. 
+    ``` yaml
+    # This workflow is used for the Communication Subproblem. 
+    # It automates the bot so that its script is run every 15 minute. 
+    name: Bot Feed Updates
+
+    # Controls when workflow will run 
+    on: 
+    # Allows running this workflow manually from the Actions tab of repo
+    workflow_dispatch:
+    # Run is scheduled every 15 min
+    schedule:
+        - cron: "*/15 * * * *"
+
+    # A workflow run is made up of one or more JOBS
+    jobs: 
+    # This workflow contains a single JOB called "feed-update"
+    feed-update: 
+    # The runner that the job will run on
+        runs-on: ubuntu-latest 
+
+        # Steps represent a sequence of tasks that will be executed 
+        # as part of the job
+        steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, 
+        # so your job can access it
+        - name: Checkout Repository 
+            uses: actions/checkout@v4
+
+        # Set up Python 
+        - name: Set up Python
+            uses: actions/setup-python@v5
+            with: 
+            python-version: '3.11'
+
+        # Install Python dependencies 
+        # Here, it first installs and updates pip
+        # Then finds the requirements.txt file and installs the dependencies listed
+        - name: Install Dependencies 
+            run: |
+            python -m pip install --upgrade pip 
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+        # Create the service_accounts.json file that stores Google API credentials 
+        # It's in the repository's secrets and not in the public repo, so it will be written to the repo now
+        - name: Write service account JSON
+            run: |
+                cat <<EOF > service_accounts.json
+                ${{ secrets.GOOGLE_CREDENTIALS }}
+                EOF
+                
+        # Run the bot's script 
+        - name: Run Bot Script 
+            run: |
+            python "Communication Subproblem/app_template.py"
+            echo "Bot feed refreshed"
+    ```
+    YAML is a very easy language to learn, so you are encouraged to play around with the script and add additional logic.  
+
+6. Test that the script work by going to the **Actions** tab of your repository and manually running the Workflow. 
+
+Now your bot should be automated to run every 15 minute. If you want to stop it from continuously posting, you can disable the workflow until you need to present it. 
+
+You are free to deploy the bot in other ways, such as by using any of the popular cloud infrastructure providers. Options that include generous free trials/always-free plans are [Google Cloud](https://cloud.google.com/free) and [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/free/).
 #### 2.5 Test the bot 
 
 #### 💡 Suggested improvements 

@@ -32,9 +32,6 @@ with open("secrets/credentials.json", "r") as f:
 username = creds["BLUESKY_USERNAME"]
 password = creds["BLUESKY_PASSWORD"]
 
-print(BLUESKY_USERNAME)
-print(BLUESKY_PASSWORD)
-
 # Authorize Bluesky connection
 client = Client()
 client.login(username, password)

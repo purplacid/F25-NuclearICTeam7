@@ -3,4 +3,3 @@ atproto
 geopy
 google-auth
 gspread
-pprint
