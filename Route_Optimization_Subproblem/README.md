@@ -4,7 +4,22 @@
 
 Congratulations! You have been chosen to join a special team of engineers and scientists at Canadian Nuclear Labs (CNL). Your mission is to design a system to optimize truck routing, considering environmental challenges and on-route resources, such as gas stations.
 
-Transport trucks could face a vast number of environmental conditions that present challenges for safe transportation—forest fires causing smoke and debris, floods affecting the Trans-Canada highway, as well as snow and Icy conditions. Your solution should ultimately get the truck to its destination, avoid fires and hazards, and stop at designated refueling areas. A list of locations and coordinates has been be provided.
+Transport trucks could face a vast number of environmental conditions that present challenges for safe transportation—forest fires causing smoke and debris, floods affecting the Trans-Canada highway, as well as snow and icy conditions. Your solution would help the truck navigate around these obstacles, and ensure the truck travels to its destination safely.
+
+## Challenge Overview
+
+Transport trucks are loaded with spent nuclear fuel at various nuclear sites and delivers it to be stored in the nuclear waste repository in Ignace, ON.
+For the purpose of this challenge, let's say these trucks can travel max 1000km before needing to refuel.
+
+Design a system to optimize truck routing given environmental challenges and on-route resources.
+
+Rescources provided:
+- Map file "ontario_drive_network.graphml" (Can be found on Learn)
+- Coordinates of nuclear sites
+- Coordinates of potential hazards
+- Coordinates of available refueling stations
+
+Your solution should ultimately get the truck to its destination, avoid hazards, and stop at refueling stations as needed. A list of locations and coordinates has been be provided.
 
 ## Setup
 
@@ -16,12 +31,11 @@ Before starting, make sure you have Python installed:
 ### Creating a Virtual Environment
 A Python virtual environment (venv) is a self-contained directory that allows you to install packages and dependencies for a specific project without affecting the global Python installation or other projects.
 
-1. Download the starter code contained in this folder (it is recommended you use [git](https://www.w3schools.com/git/git_getstarted.asp?remote=github) to download and share these files)
-2. Open a terminal in vscode and use `cd [insert absolute path to your project locally]` to navigate to the directory where you stored the code you downloaded in step 1
-3. Create a venv:
-    - Enter `python -m venv [name-of-your-venv]` in the same terminal. 
+1. Open a terminal in vscode and use `cd [insert absolute path to your project locally]` to navigate to the directory where you want to store your poject files
+2. Create a venv:
+    - Enter `python -m venv [name-of-your-venv]` in the same terminal 
     This should create a new folder with the name of your venv under your directory
-4. Activate the venv:
+3. Activate the venv:
     - for Mac/Linux users: `source ./name-of-your-venv/bin/activate `
     - for Windows users: `.\name-of-your-venv\Scripts\activate`
     - When prompted, type R and then enter to run once
@@ -76,9 +90,12 @@ For debugging, you can include a line printing out the loaded site names, though
 <img src="/Route_Optimization_Subproblem/images/print_loaded_sites.png" alt="Print loaded sites" height="25">
 <!-- ![Print loaded sites](/Route_Optimization_Subproblem/images/print_loaded_sites.png) -->
 
+We also want to include the saved file "ON_MB_Road_Data.graphml" to load our map.
+
+<img src="/Route_Optimization_Subproblem/images/load_map.png" alt="Load map file" height="25">
+
 ### Defining our Heuristic
-We can create a function to calculate the direct distance from a node to a site, which will be used when finding
-the fastest route. It will take three inputs, the first node, second node, and the road network.
+We can create a function to calculate the direct distance from a node to a site, which will be used when finding the fastest route. It will take three inputs, the first node, second node, and the road network.
 
 <img src="/Route_Optimization_Subproblem/images/def_haversine.png" alt="def_haversine" height="25">
 <!-- ![def_haversine](/Route_Optimization_Subproblem/images/def_haversine.png)-->
@@ -93,7 +110,7 @@ Now we need to set the radius of the sphere we are measuring on. In this case, w
 <img src="/Route_Optimization_Subproblem/images/haversine2.png" alt="Radius" height="25">
 <!-- ![Radius](/Route_Optimization_Subproblem/images/haversine2.png) -->
 
-We can calculate the difference in longitude and latitude, and want to convert this to radians so that we can estimate the distance on the curve of the earth, as this uses trig functions.
+We can calculate the difference in longitude and latitude, and we want to convert this to radians so that we can estimate the distance on the curve of the earth, as this uses trig functions.
 
 <img src="/Route_Optimization_Subproblem/images/haversine3.png" alt="Distance calculation" height="50">
 <!-- ![Distance calculation](/Route_Optimization_Subproblem/images/haversine3.png) -->
@@ -117,7 +134,7 @@ Now, we have to make some way of actually showing the route we've found, and for
 <!-- ![Map creation](/Route_Optimization_Subproblem/images/map_code.png) -->
 
 ### Finding our Routes
-we can use a built in a* algorithm with our haversine heuristic to calculate the most optimal route between sites.
+We can use a built in a* algorithm with our haversine heuristic to calculate the most optimal route between sites.
 
 <img src="/Route_Optimization_Subproblem/images/bruce_route.png" alt="Bruce route calculation" height="75">
 <!-- ![Bruce route calculation](/Route_Optimization_Subproblem/images/bruce_route.png) -->
@@ -139,16 +156,16 @@ Finally, we should save the map so that we can open it in our browser, and print
 <img src="/Route_Optimization_Subproblem/images/save_map.png" alt="Save map" height="50">
 <!-- ![Save map](/Route_Optimization_Subproblem/images/save_map.png) -->
 
-### Identify Fire Location and Radius
-Now that we have functioning code, consider the limitless possibile additions to make this solution more realistic. For example, We can add hazards, such as fires. 
+### Identify Hazard Location and Radius
+Now that we have functioning code, we can consider other elements such as fires.
+You many refer to the provided list of hazardous areas to avoid. 
 
-We can choose a point to be the midpoint of our fire, then set the size of the area around it.
+We can set the midpoint of our fire and the size of the area around it.
 
 <img src="/Route_Optimization_Subproblem/images/fire_location.png" alt="Fire location" height="50">
 <!-- ![Fire location](/Route_Optimization_Subproblem/images/fire_location.png) -->
-For the purpose of this challenge, a list of fire locations to avoid has been provided.
 
-Now that we have set an area for our fire, we have to let the algorithm know that routing through the fire would be less optimal. To do this, we increase the weighting of the nodes within the specificed area.
+Now that we have set an area for our fire, we have to let the algorithm know that routing through the hazard would be less optimal. To do this, we increase the weighting of the nodes within the specificed area.
 
-<img src="/Route_Optimization_Subproblem/images/fire_penalty.png" alt="Fire zone penalty" height="150">
+<img src="/Route_Optimization_Subproblem/images/fire_penalty.png" alt="Hazard zone penalty" height="150">
 <!-- ![Fire zone penalty](/Route_Optimization_Subproblem/images/fire_penalty.png) -->
