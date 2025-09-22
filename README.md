@@ -30,14 +30,9 @@ Your team at **CNL** has been tasked to design the **various monitoring systems*
 
 Your Task is to develop a solution to one or more of these subproblems that withstands CNL's expectations and standards. You may also find a **unique way to combine solutions** across multiple areas. Remember: **time is of the essence!** Top scientists at CNL will be arriving in **two days** to assess your results.
 
-Please remember to work pragmatically and safely, for general guidelines please look [here.] (https://www.youtube.com/watch?v=DTEPPzmhYks)
+Please remember to work pragmatically and safely. For general guidelines, please review 2618_questions_and_answers_ _safe_and_secure_transporta.pdf 
 
----
 
-## General Resources  
-
-- Orbbec Camara
-- Arduino Sensor kit
 ---
 
 ## Sub-Problems  
@@ -56,11 +51,6 @@ Design a system to optimize truck routing given environmental challenges and on-
 **Please read the Route Optimization SubProblem for more information and work done by your predecessor**  
 The example solution provided is code written to take map data and plan the most optimal route from several nuclear sites (marked blue) to the planned repository location (marked green). The system accounts for environmental obstacles and weather events that might make a route less desirable, such as a forest fire placed along the initial route (red marked area).  
 
----
-
-# CNL Nuclear Waste Transport Challenge – Sub-Problem Areas  
-
----
 
 ## Loading & Unloading  
 
@@ -87,14 +77,14 @@ Trucks will be travelling from **All Four provinces to the deposition site in Ig
 Spent fuel is transported in heavily shielded casks. Radiation is very difficult to detect externally, but if shielding is compromised, **radiation leakage** becomes possible.  
 
 ### Challenge  
-For this challenge, instead of real radiation, a **433 MHz RF signal** will be used as a substitute. This can be easily shielded with aluminum foil to simulate shielding effects. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. Groundwork provided by your predecessor in the Sensor Package Subproblem files covers in-depth methods of implementing various sensors and tools to accurately gauge the conditions of the transport truck. 
+For this challenge, instead of real radiation, an **IR emitter** will be used as a substitute. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. Groundwork provided by your predecessor in the Sensor Package Subproblem files covers in-depth methods of implementing various sensors and tools to accurately gauge the conditions of the transport truck. 
 
 
 ---
 
 ## Communications with Authorities  
 
-Effective **communication systems** are essential to ensure the operational integrity of nuclear waste transport. Ensuring that the propler safety mesure are taken into consideration to mitigate and effectively respond to hazardous situations such as. 
+Effective **communication systems** are essential to ensure the operational integrity of nuclear waste transport. Ensuring that the proper safety measures are taken into consideration to mitigate and effectively respond to hazardous situations, such as: 
 
 - Collision  
 - Route deviation  
@@ -109,10 +99,6 @@ Create a system specialized to **improve communication with authorities, adminis
 - Implement a **logging & escalation mechanism** with progressive alerts depending on severity  
 - Enable **inter-vehicular/dispatch communication**  
 
-### Resources  
-- (To be provided by CNSC)  
-
----
 
 ## Public Warnings Communication  
 
