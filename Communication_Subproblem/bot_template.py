@@ -1,8 +1,15 @@
+# Google Sheets accessor
 import gspread
-import atproto
 import json
-from google.oauth2.service_account import Credentials
+import time
+# Atproto protocol for accessing Bluesky
 from atproto import Client
+# Geopy for geocoding 
+from geopy.geocoders import Nominatim 
+# Google API authorization 
+from google.oauth2.service_account import Credentials
+# Module for printing data structures nicely
+from pprint import pprint 
 
 # Define the scope
 scopes = [
@@ -11,7 +18,6 @@ scopes = [
 ]
 
 # Authenticate Google Sheets with credentials
-
 creds = Credentials.from_service_account_file("service_accounts.json", scopes=scopes)
 gc = gspread.authorize(creds)
 
@@ -26,24 +32,17 @@ with open("credentials.json", "r") as f:
 username = creds["BLUESKY_USERNAME"]
 password = creds["BLUESKY_PASSWORD"]
 
-# Authorize
+# Authorize Bluesky
 client = Client()
 client.login(username, password)
 
-# TODO: while loop: fetch the most recent status based on time
-second_row = sheet.row_values(2)
-print(f"2nd row of data: {second_row}")
-
-alert_message = "alert"
-status = "status"
-
-# TODO: Detect crisis mode if unresolved, unscheduled stop
-
-# TODO: If message changes post right away; else, post every 15 min
+# TODO: fetch data using gspread and generate message 
+alert_message = "alert" # replace with appropriate alert 
+status = "status" # replace with appropriate status (e.g. "Response underway")
 
 # TODO: Translate coordinates to general location 
 location = "location"
 
 # Public post
-post = client.send_post('Major alert for ' + location + ' residents: ' + alert_message + '.' + 
+post = client.send_post('Major alert for ' + location + ":" + alert_message + '.' + 
 status)
