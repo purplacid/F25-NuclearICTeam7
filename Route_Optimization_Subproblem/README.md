@@ -1,4 +1,4 @@
-# Nuclear Route Planning Challenge
+# Nuclear Transport Route Optimization Challenge
 
 **Welcome!**
 
@@ -8,10 +8,10 @@ Transport trucks could face a vast number of environmental conditions that prese
 
 ## Setup
 
-Before starting, make sure you have Python installed.
-You can download Python here: https://www.python.org/downloads/
-You can download VSCode here: https://code.visualstudio.com/download
-And here is a link to a tutorial on how to use VSCode if needed: https://code.visualstudio.com/docs/getstarted/getting-started
+Before starting, make sure you have Python installed:
+-    You can download Python here: https://www.python.org/downloads/
+-    You can download VSCode here: https://code.visualstudio.com/download
+-    And here is a link to a tutorial on how to use VSCode if needed: https://code.visualstudio.com/docs/getstarted/getting-started
 
 ### Creating a Virtual Environment
 A Python virtual environment (venv) is a self-contained directory that allows you to install packages and dependencies for a specific project without affecting the global Python installation or other projects.
@@ -36,10 +36,9 @@ A Python virtual environment (venv) is a self-contained directory that allows yo
 -   **Scikit-Learn**: For statistical modeling
 
 You can download the above Python libraries in your virtual environment by entering this one-line command in your terminal (Command Prompt on Mac or PowerShell on Windows):
-    ```
-    pip install osmnx networkx geopandas folium scikit-learn
-    ```
-
+```
+pip install osmnx networkx geopandas folium scikit-learn
+```
 
 ## Walkthrough
 
@@ -47,12 +46,15 @@ We have supplied the map data on Learn to be used to create your maps and routes
 Make sure to keep all the files used in this project in the same folder. 
 
 First, we will need a .geojson file to hold site names and coordinates which can be made as follows:  
-![GeoJSON file](/Route_Optimization_Subproblem/images/geojson.png)  
+
+<img src="/Route_Optimization_Subproblem/images/geojson.png" alt="GeoJSON file" height="250">
 A list of nuclear sites and their coordinates has been provided.
 Ensure that this new file is also in your project folder.
 
 From here, we can open our folder in VS code and create a new file for our main code. We need to import some libraries.
-![Import code](/Route_Optimization_Subproblem/images/import_libraries.png)
+
+<img src="/Route_Optimization_Subproblem/images/import_libraries.png" alt="Import code" height="150">
+<!-- ![Import code](/Route_Optimization_Subproblem/images/import_libraries.png) -->
 
 | import code         | Purpose                                                  |
 | ------------- | -------------------------------------------------------- |
@@ -64,63 +66,89 @@ From here, we can open our folder in VS code and create a new file for our main 
 | **from math import radians, cos, sin, sqrt, atan2**|For dist calculations|
 
 ### Load Nuclear Location File
-![Load relavent sites from GeoJSON](/Route_Optimization_Subproblem/images/load_nuclear_location.png)  
+
+<img src="/Route_Optimization_Subproblem/images/load_nuclear_location.png" alt="Load relavent sites from GeoJSON" height="25">
+<!-- ![Load relavent sites from GeoJSON](/Route_Optimization_Subproblem/images/load_nuclear_location.png) -->
 This line reads the geojson file we created and confirms for us that coordinates are in the correct format.
 
 For debugging, you can include a line printing out the loaded site names, though this is not necessary for the function of the code as a whole. 
-![Print loaded sites](/Route_Optimization_Subproblem/images/print_loaded_sites.png)
+
+<img src="/Route_Optimization_Subproblem/images/print_loaded_sites.png" alt="Print loaded sites" height="25">
+<!-- ![Print loaded sites](/Route_Optimization_Subproblem/images/print_loaded_sites.png) -->
 
 ### Defining our Heuristic
 We can create a function to calculate the direct distance from a node to a site, which will be used when finding
 the fastest route. It will take three inputs, the first node, second node, and the road network.
-![def_haversine](/Route_Optimization_Subproblem/images/def_haversine.png)
+
+<img src="/Route_Optimization_Subproblem/images/def_haversine.png" alt="def_haversine" height="25">
+<!-- ![def_haversine](/Route_Optimization_Subproblem/images/def_haversine.png)-->
 
 Next we can find the longitude and latitude of the nodes from graph G.
-![Find longitude and latitude](/Route_Optimization_Subproblem/images/haversine1.png)
+
+<img src="/Route_Optimization_Subproblem/images/haversine1.png" alt="Find longitude and latitude" height="50">
+<!-- ![Find longitude and latitude](/Route_Optimization_Subproblem/images/haversine1.png) -->
 
 Now we need to set the radius of the sphere we are measuring on. In this case, we use earth, which has radius 6371 km.
-![Radius](/Route_Optimization_Subproblem/images/haversine2.png)
+
+<img src="/Route_Optimization_Subproblem/images/haversine2.png" alt="Radius" height="25">
+<!-- ![Radius](/Route_Optimization_Subproblem/images/haversine2.png) -->
 
 We can calculate the difference in longitude and latitude, and want to convert this to radians so that we can estimate the distance on the curve of the earth, as this uses trig functions.
-![Distance calculation](/Route_Optimization_Subproblem/images/haversine3.png)
+
+<img src="/Route_Optimization_Subproblem/images/haversine3.png" alt="Distance calculation" height="50">
+<!-- ![Distance calculation](/Route_Optimization_Subproblem/images/haversine3.png) -->
 
 Finally, we can calculate the distance and convert it to kilometers.
-![Return line](/Route_Optimization_Subproblem/images/haversine4.png)
+
+<img src="/Route_Optimization_Subproblem/images/haversine4.png" alt="Return line" height="25">
+<!-- ![Return line](/Route_Optimization_Subproblem/images/haversine4.png) -->
 
 ### Find Nearest Nodes to Sites
 These steps specifically locate the nodes for Bruce Power and Ignace:  
-![Nearest node to Bruce](/Route_Optimization_Subproblem/images/bruce_nearestnode.png) 
+
+<img src="/Route_Optimization_Subproblem/images/bruce_nearestnode.png" alt="Nearest node to Bruce" height="50">
+<!-- ![Nearest node to Bruce](/Route_Optimization_Subproblem/images/bruce_nearestnode.png) -->
 Repeat this for the other sites of interest (Ignace, Darlington, Chalk River Labs, etc.)
 
 ### Map Creation
 Now, we have to make some way of actually showing the route we've found, and for that we have folium. This will create an empty map centered around Ontario.
-![Map creation](/Route_Optimization_Subproblem/images/map_code.png)
+
+<img src="/Route_Optimization_Subproblem/images/map_code.png" alt="Map creation" height="25">
+<!-- ![Map creation](/Route_Optimization_Subproblem/images/map_code.png) -->
 
 ### Finding our Routes
 we can use a built in a* algorithm with our haversine heuristic to calculate the most optimal route between sites.
 
-![Bruce route calculation](/Route_Optimization_Subproblem/images/bruce_route.png) 
+<img src="/Route_Optimization_Subproblem/images/bruce_route.png" alt="Bruce route calculation" height="75">
+<!-- ![Bruce route calculation](/Route_Optimization_Subproblem/images/bruce_route.png) -->
 Again, repeat this for the other sites routing to ignace.
 
-Now we need to populate it with route data! We can turn each node into a pair of coordinates, then
-use folium to create a line between them and add it to the map.
-<!--- 'route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route]'
-'folium.PolyLine(route_coords, color="green", weight=5).add_to(m)' --->
-![Route data](/Route_Optimization_Subproblem/images/route_coords_ex.png)
+Now we need to populate it with route data! We can turn each node into a pair of coordinates, then use folium to create a line between them and add it to the map.
+<!-- 'route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route]'
+'folium.PolyLine(route_coords, color="green", weight=5).add_to(m)' -->
+<img src="/Route_Optimization_Subproblem/images/route_coords_ex.png" alt="Route Data" height="50">
+<!-- ![Route data](/Route_Optimization_Subproblem/images/route_coords_ex.png) -->
 
 We want to highlight our sites with special markers for easy reading, which can be done easily by looping through each site with the following code.
-![Add markers manually](/Route_Optimization_Subproblem/images/add_marker.png)
 
-Finally, we should save the map so that we can open it in our browser, and print out a message
-confirming we have saved successfully.
-![Save map](/Route_Optimization_Subproblem/images/save_map.png)
+<img src="/Route_Optimization_Subproblem/images/add_markers.png" alt="Add markers manually" height="175">
+<!-- ![Add markers manually](/Route_Optimization_Subproblem/images/add_marker.png) -->
+
+Finally, we should save the map so that we can open it in our browser, and print out a message confirming we have saved successfully.
+
+<img src="/Route_Optimization_Subproblem/images/save_map.png" alt="Save map" height="50">
+<!-- ![Save map](/Route_Optimization_Subproblem/images/save_map.png) -->
 
 ### Identify Fire Location and Radius
 Now that we have functioning code, consider the limitless possibile additions to make this solution more realistic. For example, We can add hazards, such as fires. 
 
 We can choose a point to be the midpoint of our fire, then set the size of the area around it.
-![Fire location](/Route_Optimization_Subproblem/images/fire_location.png)
+
+<img src="/Route_Optimization_Subproblem/images/fire_location.png" alt="Fire location" height="50">
+<!-- ![Fire location](/Route_Optimization_Subproblem/images/fire_location.png) -->
 For the purpose of this challenge, a list of fire locations to avoid has been provided.
 
 Now that we have set an area for our fire, we have to let the algorithm know that routing through the fire would be less optimal. To do this, we increase the weighting of the nodes within the specificed area.
-![Fire zone penalty](/Route_Optimization_Subproblem/images/fire_penalty.png)
+
+<img src="/Route_Optimization_Subproblem/images/fire_penalty.png" alt="Fire zone penalty" height="150">
+<!-- ![Fire zone penalty](/Route_Optimization_Subproblem/images/fire_penalty.png) -->
