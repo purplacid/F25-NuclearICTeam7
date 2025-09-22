@@ -40,9 +40,9 @@ client.login(username, password)
 alert_message = "alert" # replace with appropriate alert 
 status = "status" # replace with appropriate status (e.g. "Response underway")
 
-# TODO: Translate coordinates to general location 
+# TODO: Translate coordinates to general location using geopy
 location = "location"
 
-# Public post
+# Publish post
 post = client.send_post('Major alert for ' + location + ":" + alert_message + '.' + 
 status)

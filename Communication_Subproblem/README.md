@@ -9,13 +9,6 @@
 * Update subproblem README
    * run through instructions and implement suggested changes
 
-* Bluesky bot template finish
-
-* Generate more fake data 
-    * History 
-    * Local authorities in Location sheet 
-    * Export
-
 * user testing
 
 ## Problem Description 
@@ -128,6 +121,7 @@ v. In "Actions secrets and variables," click "New repository secret" and paste t
 * Better post organization (e.g. instead of sending out individual posts, consolidate some into threads)
 
 ## Resources 
+* [**Link to Google Sheets dataset**](https://docs.google.com/spreadsheets/d/1OjUgnxIO0DFm4mhyJQ-2K-jQ2L1gPBy0DVwrID45a6Y/edit?usp=sharing): Make a copy to adjust and add new data to your liking. 
 
 ## FAQs
 

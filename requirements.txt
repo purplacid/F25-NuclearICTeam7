@@ -1,5 +1,6 @@
 # These requirements are for the Communication Subproblem
 atproto 
 geopy
-gspread
 google-auth
+gspread
+pprint
