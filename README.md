@@ -28,7 +28,9 @@ Your team at **CNL** has been tasked to design the **various monitoring systems*
 - **Live vehicle state monitoring** during transport  
 - **Communication technology** for emergency response  
 
-Your Task is to develop a solution to one or more of these subproblems that withstands CNL's expectations and standards. You may also find a **unique way to combine solutions** across multiple areas. Remember: **time is of the essence!** Top scientists at CNL will be arriving in **two days** to assess your results.  
+Your Task is to develop a solution to one or more of these subproblems that withstands CNL's expectations and standards. You may also find a **unique way to combine solutions** across multiple areas. Remember: **time is of the essence!** Top scientists at CNL will be arriving in **two days** to assess your results.
+
+Please remember to work pragmatically and safely, for general guidelines please look [here.] (https://www.youtube.com/watch?v=DTEPPzmhYks)
 
 ---
 
