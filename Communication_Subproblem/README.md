@@ -48,9 +48,8 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 
 #### What is Bluesky? 
 
-#### 2.1 Setting up Google Sheet API 
-
-1. Set up Google Cloud  
+#### Setting up Google Sheet API 
+1.  Set up Google Cloud  
     i. Log into [Google Cloud](https://cloud.google.com/). Do this by following the link, scrolling down, and clicking "Go to my console."  
 
     ii. In the search bar, search and enable Google Sheets API (Marketplace).  
@@ -62,7 +61,7 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 
     ii. Name the service account and click "Create and Continue."  
 
-    iii. Download the JSON key file for the service account. Rename it to `service_account.json`.  
+    iii. Download the JSON key file for the service account. Rename it to `service_account.json`. Move it into the same folder as your Python script for now. 
 
 3. Connect to Google Sheets  
     i. Open your Google Sheet containing all your data. 
@@ -72,9 +71,9 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
     iii. Grant Editor permissions to the email. 
 
 4. Connect your Python script  
-    i. In your terminal, install the necessary libraries:  
+    i. In your terminal, install the necessary libraries (replace atproto if you are not using Bluesky):
     ``` bash
-     pip install gspread google-auth
+     pip install gspread google-auth geopy atproto
     ```  
     ii. Paste the following code into your bot script:  
     ``` python
@@ -88,7 +87,6 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
     ]
 
     # Authenticate Google Sheets with credentials
-
     creds = Credentials.from_service_account_file("service_account.json", scopes=scopes)
     gc = gspread.authorize(creds)
 
@@ -97,14 +95,42 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
     ```
     Now you can refer to specific columns, tables, rows, etc. Read more about how to use gspread [here](https://docs.gspread.org/en/latest/). 
 
-#### 2.2 Setting up social media connection
-1. Start by reading the documentations of 
-connect to your platform's api and send the alerts there  
+#### Setting up social media connection
+1. Start by reading the developer's documentation for your social media platofrm of choice. The documentation for Bluesky is available [here](https://docs.bsky.app/).
 
-#### 2.3 Write your code 
+2. Set up a new account save the credentials in a ``credentials.json`` file. Move that file into a ``secrets`` subfolder.
+    ``` json
+    {
+    "BLUESKY_USERNAME": "username",
+    "BLUESKY_PASSWORD": "password"
+    }
+    ```
+
+3. Import the json decoder module in the header of your Python script. 
+    ``` python 
+    import json
+    ```
+
+4. Paste this snippet into your script. 
+    ``` python
+    # Load in credentials from credentials.json
+    with open("secrets/credentials.json", "r") as f: 
+        creds = json.load(f)
+
+    username = creds["BLUESKY_USERNAME"]
+    password = creds["BLUESKY_PASSWORD"]
+    ```
+
+5. Now you can use your credentials to access your platform's API. For accessing Bluesky with atproto:
+    ``` python
+    # Authorize Bluesky connection
+    client = Client()
+    client.login(username, password)
+    ```
+#### Write your code 
 Find a way to parse the data and generate alerts based on it 
 
-#### 2.4 Deploy via Github Action
+#### Deploy via Github Action
 Starter guide: https://www.youtube.com/watch?v=mFFXuXjVgkU
 
 iv. Go to the Github repository of your project. Go to "Settings" > "Security" > "Secrets and variables" > Actions.  
@@ -115,10 +141,11 @@ v. In "Actions secrets and variables," click "New repository secret" and paste t
 
 #### 💡 Suggested improvements 
 * More specific alert types (may have to create new types of data in your dataset.)
-* Instead of fixed scheduling, have the bot only post in response to important updates
-* Better handling of API credentials and security measures 
-* Interactivity (e.g. reply to the bot to get more detailed information, etc)  
-* Better post organization (e.g. instead of sending out individual posts, consolidate some into threads)
+* Instead of fixed scheduling at every 15 minute, have the bot only post in response to important updates
+* Alerts in French for incidents in Quebec. 
+* Better, more secure handling of API credentials.  
+* Interactivity (e.g. reply to the bot to get more detailed information.)  
+* Better organization of posts (e.g. instead of sending out individual posts, consolidate some into threads)
 
 ## Resources 
 * [**Link to Google Sheets dataset**](https://docs.google.com/spreadsheets/d/1OjUgnxIO0DFm4mhyJQ-2K-jQ2L1gPBy0DVwrID45a6Y/edit?usp=sharing): Make a copy to adjust and add new data to your liking. 
