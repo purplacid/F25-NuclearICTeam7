@@ -12,7 +12,9 @@ Trucks will be carrying radioactive material through populated cities, highways,
 
 - The **safety and health** of the public  
 - The **workers** in the nuclear sector  
-- The **environment**  
+- The **environment**
+
+  More information is available [here.](https://www.youtube.com/watch?v=DTEPPzmhYks )
 
 ---
 
