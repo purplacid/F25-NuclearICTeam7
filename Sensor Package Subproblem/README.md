@@ -17,6 +17,7 @@ Design a comprehensive sensor package using Arduino Uno R4 Minima, Grove Sensor 
 Examples of some relevant emergencies might include:
 - Crashes
 - Storms
+- Fires
 - Radiation leaks
 
 Alert drivers/authorities immediately if anomalies occur!
