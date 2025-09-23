@@ -4,7 +4,9 @@
 
 Congratulations! You've been chosen to join an elite engineering team at Canadian Nuclear Labs (CNL). Your mission? Create an innovative system for real-time monitoring of vehicle and container conditions during nuclear waste transport across Canada.
 
-Transport trucks will face tough conditions—vibrations from uneven roads, shifting weight distribution during loading, harsh weather, and potential shielding failures. Your solution will help protect public safety and environmental health by promptly identifying any risks.
+Nuclear transport trucks are travel through remoted, isolated locations, making transportation difficult due to unpredictable and harsh road conditions. Limitted service and connectivity make live-updates difficult and unreliable. Your system will allow the truck to monitor the state of the package, truck and environment. This data can allow the transport truck to make important decisions protecting local communities and the environment in cases of emergencies or unexpected road hazards. Nuclear transport is a high-security and high-risk job and transport trucks face tough conditions—vibrations from uneven roads, shifting weight distribution during loading, harsh weather, and potential shielding failures.
+
+Your solution will help protect public safety and environmental health by promptly identifying any risks.
 
 ---
 
@@ -12,14 +14,41 @@ Transport trucks will face tough conditions—vibrations from uneven roads, shif
 
 Design a comprehensive sensor package using Arduino Uno R4 Minima, Grove Sensor Kit, and additional sensors to monitor relevant metrics for transporting nuclear material.
 
-Examples of relevant emergencies might include:
+Examples of some relevant emergencies might include:
 - Crashes
-- Internal temperature and humidity
-- Radiation levels (simulated using 433MHz RF EMR)
+- Storms
+- Radiation leaks
 
-Alert drivers and authorities immediately if anomalies occur!
+Alert drivers/authorities immediately if anomalies occur!
 
 ---
+## Tools Provided
+
+- Arduino Uno R4 Minima
+- Grove Sensor Kit:
+    - Touch Sensor
+    - Light Sensor
+    - Temperature Sensor
+    - Rotary Angle Sensor
+    - Sound Sensor
+    - Buzzer
+    - Button
+    - LED Socket
+    - LCD Screen
+    - Servo
+    - Relay
+- AHT20 Temperature and Humidity Sensor
+- BMX160 9-axis IMU
+- Radiation Source
+    - IR Emitter (Blue)
+    - 3V Coin battery
+    - LED (Green)
+    - Resistors
+- IR Sensor
+- LM741 Op-Amps
+- Cardboard Box
+- Wires, Resistors and breadboard
+  Students are not required to use all (or any) of the provided tools to create their solution 
 
 ## ⚙️ Documentation and Reference Material
 
@@ -32,7 +61,7 @@ Alert drivers and authorities immediately if anomalies occur!
     - [Hx53/HXM121 Infrared Transmitter/Receiver](https://mschoeffler.com/2021/05/01/arduino-tutorial-ir-transmitter-and-ir-ir-receiver-hx-m121-hx-53-ky-005-ky-022-keyes-iduino-open-smart/)
 - ** BreadBoard Basics ** [https://www.build-electronic-circuits.com/breadboard/]
 
-      *Detailed setup and code instructions for these modules are included in the sections below.*
+  Detailed setup and code instructions for these modules are included in the sections below.
 
 ---
 
@@ -48,51 +77,48 @@ Follow these steps to set up your vehicle state monitoring solution:
 
 ### 2. 📡 Sensor Connections
 
-For Grove kit sensor connections - refer to the provided `https://github.com/IdeasClinicUWaterloo/Technologies-Utilized-for-Idea-s-Clinic-Challenges/blob/main/Seed%20Grove%20Kit/GUIDE.md`.
+For Grove kit sensor connections - refer to the provided `https://github.com/IdeasClinicUWaterloo/Technologies-Utilized-for-Idea-s-Clinic-Challenges/blob/main/Seed%20Grove%20Kit/GUIDE.md` and the instruction manual inside the kits.
 Follow these specific instructions for each additional sensor:
 
 #### DFRobot BMX160 9-Axis IMU
 
--   **Connection:**
-     VCC -> 5V; 
-      GND -> GND
-     ; SLA -> SLA
-     ; SDA -> SDA  
+-   **Connection: (IMU -> Arduino) **
+>VCC -> 5V
+>GND -> GND
+>SLA -> SLA
+>SDA -> SDA  
 -   **Library:** Install `DFRobot_BMX160` via the Arduino IDE Library Manager.
 -   **Setup Notes:** This sensor provides accelerometer, gyroscope, and magnetometer data. It communicates via I2C. Ensure no other I2C devices on the same port have address conflicts (though unlikely for these modules).
 -   **Reference:** See [DFRobot Guide](https://wiki.dfrobot.com/BMX160_9-axis_Sensor_Module_SKU_SEN0373) for basic usage examples.
 
 #### Adafruit AHT20 Temperature and Humidity Sensor
 
--   **Connection:**
-VCC -> 5V; 
-      GND -> GND
-     ; SLA -> SLA
-     ; SDA -> SDA  
+-   Connection: (AHT20 -> Arduino)
+>VCC -> 5V
+>GND -> GND
+>SLA -> SLA
+>SDA -> SDA  
 -   **Setup Notes:** Provides accurate ambient temperature and humidity. Communicates via I2C.
 -   **Reference:** See [Adafruit AHT20 Guide](https://learn.adafruit.com/adafruit-aht20) for library usage.
 
-#### Hx53/HXM121 Infrared Transmitter/Receiver
+#### Simulating Radiation
+Radiation is simulated using infrared emitters and sensors. The emitter has already been created and is part of the radiation source package. The output of sensor is low and needs to be amplified through an Op-Amp.
 
--   **Connection:** Digital pins on Grove Shield.
-    * **Transmitter (Hx53):** Connect VCC to 5V, GND to GND, and SIG to an Arduino Digital Pin (e.g., D6).
-    * **Receiver (HXM121):** Connect VCC to 5V, GND to GND, and SIG to another Arduino Digital Pin (e.g., D7).
--   **Library:** No dedicated library is strictly required; simple `digitalRead()` and `digitalWrite()` are used.
--   **Setup Notes:** These modules typically send/receive simple ON/OFF pulses. The transmitter sends an IR signal when its SIG pin is HIGH, and the receiver's SIG pin goes LOW when it detects an IR signal. Useful for line-of-sight detection or short-range communication.
--   **Reference:** See [IR Transmitter/Receiver Guide](https://www.elecfreaks.com/wiki/index.php?title=IR_Transmitter_and_Receiver_Module) for wiring and basic code examples.
+#### IR Sensor connections
+See Datasheet (https://www.vishay.com/docs/81509/bpv22nf.pdf). With the spherical side facing towards you, the anode is the left leg and the cathode the right leg. Connect the Annode to the Arduino 5V and a 1K resistor from the Annode to ground. Connect the cathode to the non-inverting input of the Op-amp. Connect the output ot the inverting input using a 100k resistor and the inverting input to ground using a 1k resistor. Connect VCC to the Arduino 5V and the VEE to ground. Connect the output to an Arduino analog pin to read the sensor data. 
 
-## Testing Stations
-
- - Nuclear waste will be simulated using an IR Emitter
- - The radioactive material will be placed inside a 3x3x3 nuclear waste containor with a small hole to simulate a radiation leak
- - Various films will be prepared to block radiation and simulate varying levels of radation intensity
- - The nuclear wate package and your hardware solution will be fitted onto an RC car where it will undergo various scenarios including a crash, heatwave, tipping over and speedbumps
+##### Notes:
+Reading the sensor data is simple, using "analogRead(analogPin)". 
+The sensor signal is strongest when positioned directly above the emitter, keep this in mind during testing and buiding your solution. The sensor will in theory output a range of 0-1023 depending on the strenght of the signal, however in practice, the range will likely be around 200 to 900. In the above wiring configuration, higher values represent weaker radiation. When building your solution, test the sensitivity of your sensor so you can decide the threshold for a radiation leak. 
+During demos, your radiation source should be placed inside the cardboard box with the IR emitter facing directly out of a small hole to represent a damaged container and a radiation leak, however feel free to test your solution outside the box.
 
 
-    lcd.setRGB(255, 0, 0);
-    lcd.setCursor(0,0);
-    lcd.print("!!! ALERT !!!");
-    lcd.setCursor(0,1);
-    lcd.print("Anomaly Detected!");
-    // You might also add a buzzer or external LED here
+## Testing Stations and Demos
+
+ - The nuclear waste container with the radiation source inside alongside the students sensor package will be placed onto the car trailer
+ - Student should have access to the battery switch to demonstrate how turning on/off the radiation source affects their radiation detection.
+ - The car can then be driven into a wall, over speedbumps or tipped over to demonstrate the student's ability to detect crashes, tips, or rough terrain etc.
+ - In case of emergencies, make sure to create physical alerts for the driver!
+ - Students are free to devise their own tests to demonstrate their unique solutions
+
 }
