@@ -16,6 +16,8 @@
 
 Your task is to design such a **communication system**, with information separately tailored for the **public** and the **authorities**.
 
+This subproblem highlights the importance of responsible communication in critical infrastructure. The public should be informed, but not exposed to sensitive operational details. At the same time, internal teams must have access to detailed, real-time data for decision-making and emergency response. 
+
 ### Potential Solutions 
 * *Two communication dashboards, one for the public and one for the authorities, that contain real-time updates on the truck's general location, status, and other relevant information.*
 * *A social media bot that posts alerts in the event of transport incidents*  
@@ -38,8 +40,23 @@ Google Looker Studio is a free web-based data visualization tool by Google. It a
 
 It’s perfect for building simulated alert dashboards, interactive maps, or public information panels as part of this challenge. 
 
-#### 💡 Suggested improvements 
+#### Connect Google Sheets to Looker Studio 
+1. Visit lookerstudio.google.com 
 
+2. Click **“Blank Report”** or **“+ Create”** > **"Report"** 
+
+3. Choose “Google Sheets” as your data source 
+
+4. Select your spreadsheet and the correct tab (sheet) 
+
+5. Click “Add to Report” 
+
+#### Add basic widgets
+Looker Studio gives you building blocks called widgets to create dashboards. You can use these however you like! 
+
+
+#### 💡 Suggested improvements 
+* 
 ### 📣 Part 2: Bluesky Alert Bot 
 
 ---
@@ -66,7 +83,7 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 3. Connect to Google Sheets  
     i. Open your Google Sheet containing all your data. 
 
-    ii. Click the **"Share"** button and add the service account email address (`"client_email"`) found in your `service_account.json`.
+    ii. Click the **"Share"** button and add the service account email address (`"client_email":`) found in your `service_account.json`.
 
     iii. Grant Editor permissions to the email. 
 
@@ -174,7 +191,7 @@ We are going to use Github Action for a no-cost way of deploying the "bot". Gith
         - name: Set up Python
             uses: actions/setup-python@v5
             with: 
-            python-version: '3.11'
+                python-version: '3.11'
 
         # Install Python dependencies 
         # Here, it first installs and updates pip
