@@ -77,7 +77,7 @@ Trucks will be travelling from **All Four provinces to the deposition site in Ig
 Spent fuel is transported in heavily shielded casks. Radiation is very difficult to detect externally, but if shielding is compromised, **radiation leakage** becomes possible.  
 
 ### Challenge  
-For this challenge, instead of real radiation, an **IR emitter** will be used as a substitute. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. Groundwork provided by your predecessor in the [Sensor Package Subproblem]([https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/loading_unloading_problem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Sensor%20Package%20Subproblem) files covers in-depth methods of implementing various sensors and tools to gauge the conditions of the transport truck accurately. 
+For this challenge, instead of real radiation, an **IR emitter** will be used as a substitute. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. Groundwork provided by your predecessor in the [Sensor Package Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Sensor%20Package%20Subproblem) files covers in-depth methods of implementing various sensors and tools to gauge the conditions of the transport truck accurately. 
 
 
 ---
@@ -105,7 +105,7 @@ Create a system specialized to **improve communication with authorities, adminis
 An important part of any large-scale transport operation is **public communication**.  
 
 ### Challenge  
-Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. Work provided by your predecessor, located in the [Communication subproblem]([https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/loading_unloading_problem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem)file,  includes interactive dashboards as well as advanced communication and state monitoring tools. 
+Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. Work provided by your predecessor, located in the [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem)file,  includes interactive dashboards as well as advanced communication and state monitoring tools. 
 
 ---
 
