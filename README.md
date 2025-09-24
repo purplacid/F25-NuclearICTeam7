@@ -105,7 +105,7 @@ Create a system specialized to **improve communication with authorities, adminis
 An important part of any large-scale transport operation is **public communication**.  
 
 ### Challenge  
-Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. Work provided by your predecessor, located in the [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem)file,  includes interactive dashboards as well as advanced communication and state monitoring tools. 
+Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. Work provided by your predecessor, located in the [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem) file,  includes interactive dashboards as well as advanced communication and state monitoring tools. 
 
 ---
 
