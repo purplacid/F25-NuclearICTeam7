@@ -1,5 +1,4 @@
 # These requirements are for the Communication Subproblem
 atproto 
-geopy
 google-auth
 gspread

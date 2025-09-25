@@ -1,11 +1,16 @@
 # ⚠️ Alerts and Communication Subproblem 
 
-
-
 ## For me: todos
 
 * Update main front page README
 
+* Final sections for this README:
+    * Social media bot code section 
+    * FAQ
+    * What is a dashboard 
+    * What is API
+    * What is Bluesky
+    * Images
 
 * user testing
 
@@ -36,14 +41,14 @@ This subproblem highlights the importance of responsible communication in critic
 
 
 ### Social Media bot
-
-
+* [**Bluesky Developer's Documentation**](https://gemini.google/subscriptions/): 
+* [**gspread Documentation**](https://gemini.google/subscriptions/):
+* [**Github Action introduction tutorial**](https://gemini.google/subscriptions/):
 ## Solution Template
 
 ### 📊 Part 1: Public and Internal Dashboard
 
 ---
-
 
 #### What is a Dashboard?
 
@@ -139,7 +144,7 @@ For more advanced features of Looker Studio, read the [documentation](https://cl
 
     i. In your terminal, install the necessary libraries (replace atproto if you are not using Bluesky):
     ``` bash
-     pip install gspread google-auth geopy atproto
+     pip install gspread google-auth atproto
     ```  
     ii. Write the following code into your bot script:  
     ``` python
@@ -194,6 +199,8 @@ For more advanced features of Looker Studio, read the [documentation](https://cl
     client.login(username, password)
     ```
 #### Write your code 
+
+
 Try running the code. You should see it publish a new post on your feed. 
 
 #### Automate via Github Action
@@ -273,7 +280,6 @@ We are going to use Github Action for a no-cost way of deploying the "bot". Gith
 Now your bot should be automated to run every 15 minute. If you want to stop it from continuously posting, you can disable the workflow until you need to present it. 
 
 You are free to deploy the bot in other ways, such as by using any of the popular cloud infrastructure providers. Options that include generous free trials/always-free plans are [Google Cloud](https://cloud.google.com/free) and [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/free/).
-#### 2.5 Test the bot 
 
 #### 💡 Suggested improvements 
 * More specific alert types (may have to create new types of data in your dataset.)

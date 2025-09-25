@@ -1,15 +1,10 @@
 # Google Sheets accessor
 import gspread
 import json
-import time
 # Atproto protocol for accessing Bluesky
 from atproto import Client
-# Geopy for geocoding 
-from geopy.geocoders import Nominatim 
 # Google API authorization 
 from google.oauth2.service_account import Credentials
-# Module for printing data structures nicely
-from pprint import pprint 
 
 # Define the scope
 scopes = [
@@ -40,7 +35,7 @@ client.login(username, password)
 alert_message = "alert" # replace with appropriate alert 
 status = "status" # replace with appropriate status (e.g. "Response underway")
 
-# TODO: Translate coordinates to general location using geopy
+# TODO: Translate coordinates to general location
 location = "location"
 
 # Publish post
