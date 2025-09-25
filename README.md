@@ -14,7 +14,7 @@ Trucks will be carrying radioactive material through populated cities, highways,
 - The **workers** in the nuclear sector  
 - The **environment**
 
-  More information is available [here, in this video.](https://www.youtube.com/watch?v=DTEPPzmhYks )
+  More information is available [here, in this video.](https://www.youtube.com/watch_popup?v=DTEPPzmhYks )
 
 ---
 
