@@ -12,7 +12,7 @@ Transport trucks are loaded with spent nuclear fuel at various nuclear sites and
 
 Design a system to optimize truck routing given environmental challenges and on-route resources.
 
-Rescources provided:
+Resources provided:
 - Map file "ontario_drive_network.graphml" (Can be found on Learn)
 - Coordinates of nuclear sites
 - Coordinates of potential hazards
