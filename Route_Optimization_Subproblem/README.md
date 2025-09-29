@@ -239,7 +239,7 @@ for u, v, key, data in G.edges(keys=True, data=True):
 ### Refuelling
 To tackle the refuelling problem, we first have to load the csv file of available gas station locations:
 ```
-gas_stations_df = pd.read_csv("Refueling_Truck_Stops.csv")
+gas_stations_df = pd.read_csv("Refuelling_Truck_Stops.csv")
 ```
 
 This converts the latitude and longitude for each gas station into graph nodes, similar to what we did for the nuclear sites. Then we want to save the gas station nodes back into the dataframe for reference:
