@@ -7,9 +7,6 @@
 * Final sections for this README:
     * Social media bot code section 
     * FAQ
-    * What is a dashboard 
-    * What is API
-    * What is Bluesky
     * Images
 
 * user testing
@@ -49,8 +46,10 @@ This subproblem highlights the importance of responsible communication in critic
 ### 📊 Part 1: Public and Internal Dashboard
 
 ---
+![Example dashboard](README_images/dashboard.png)
 
 #### What is a Dashboard?
+A Dashboard is a tool, usually a web-application or a dedicated software, that provides a real-time overview of data. With visualizations such as charts, highlighted numbers, tables, and other structured ways of presenting information, dashboards make data more accessible and actionable.
 
 #### What is Google Looker Studio? 
 
@@ -112,8 +111,12 @@ For more advanced features of Looker Studio, read the [documentation](https://cl
 ---
 
 #### What is an API?
+An Application Programming Interface (API) serves as the connection between two or more software applications. It's now an ubiquitous part of software development, and its wide application includes connecting the interface of a website to its backend database, facilitating interactions between devices (e.g. smart lightbulb and a phone), and embedding content from another website onto your own. In this problem template, a Python script will access the Bluesky API to make automated alert posts. 
 
 #### What is Bluesky? 
+Bluesky is a decentralized social media platform that looks and functions similarly to X (formerly Twitter.) It was initially developed as a Twitter research initiative before becoming an indepedent company, and has rapidly grown in user count since Twitter's rebranding as X and subsequent executive changes. 
+
+Most importantly, it's a relevant platform to deploy an alert bot because of its free API access. While Twitter has greatly reduced the posting and read limits on its API's Free tier, Bluesky's completely free-to-access API makes the bot easy to scale without cost limitations. 
 
 #### Setting up Google Sheet API 
 1.  Set up Google Cloud  
