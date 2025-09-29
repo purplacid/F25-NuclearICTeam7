@@ -70,7 +70,9 @@ We have supplied the map data on Learn to be used to create your maps and routes
 Make sure to keep all the files used in this project in the same folder. 
 
 ### Create Nuclear Location File
-First, we will need a .geojson file to hold site names and coordinates which can be made as follows:  
+First, we will need a .geojson file to hold site names and coordinates.
+A csv file of the nuclear sites and their coordinates has been provided. Upload this file into [GeoJSON.io](https://geojson.io/#map=2/0/20) and save it as a GeoJSON file. You can find more detailed instructions [here](https://support.planet.com/hc/en-us/articles/360016337117-Creating-a-GeoJSON-file).
+
 <!-- <img src="/Route_Optimization_Subproblem/images/geojson.png" alt="GeoJSON file" height="250"> -->
 ```
 {
@@ -85,7 +87,6 @@ First, we will need a .geojson file to hold site names and coordinates which can
   ]
 }
 ```
-A list of nuclear sites and their coordinates has been provided.
 Ensure that this new file is also in your project folder.
 
 From here, we can open our folder in VS code and create a new file for our main code. We need to import some libraries.
