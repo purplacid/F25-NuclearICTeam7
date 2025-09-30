@@ -4,11 +4,11 @@
 
 Congratulations! You have been chosen to join a special team of engineers and scientists at Canadian Nuclear Labs (CNL). Your mission is to design a system to optimize truck routing, considering environmental challenges and on-route resources, such as gas stations.
 
-Transport trucks could face a vast number of environmental conditions that present challenges for safe transportation—forest fires causing smoke and debris, floods affecting the Trans-Canada highway, as well as snow and icy conditions. Your solution would help the truck navigate around these obstacles, and ensure the the truck travels to its destination safely.
+Transport trucks could face a vast number of environmental conditions that present challenges for safe transportation—forest fires causing smoke and debris, floods affecting the Trans-Canada highway, as well as snow and icy conditions. Your solution would help the truck navigate around these obstacles and ensure the truck travels to its destination safely.
 
 ## Challenge Overview
 
-Transport trucks are loaded with spent nuclear fuel at various nuclear sites and delivers it to be stored in the nuclear waste repository in Ignace, ON. For the purpose of this challenge, let's say these trucks can travel max 1200km before needing to refuel.
+Transport trucks are loaded with spent nuclear fuel at various nuclear sites and deliver it to be stored in the nuclear waste repository in Ignace, ON. For the purpose of this challenge, let's say these trucks can travel max 1200km before needing to refuel.
 
 Design a system to optimize truck routing given environmental challenges and on-route resources.
 
@@ -18,7 +18,7 @@ Resources provided:
 - Coordinates of potential hazards
 - Coordinates of available refuelling stations
 
-Your solution should ultimately get the truck to its destination, avoid hazards, and stop at refuelling stations as needed. Locations and coordinates has been be provided.
+Your solution should ultimately get the truck to its destination, avoid hazards, and stop at refuelling stations as needed. Locations and coordinates have been provided.
 
 
 ## Tutorial
@@ -34,22 +34,22 @@ We will walk through the process of defining our heuristic, finding the nearest 
 ## Setup
 
 Before starting, make sure you have Python installed:
--   You can download Python [here](https://www.python.org/downloads/{target=_blank}).
--   You can download VSCode [here](https://code.visualstudio.com/download{target=_blank}).
--   Tutorial on how to use VSCode [here](https://code.visualstudio.com/docs/getstarted/getting-started{target=_blank}), if needed.
+-   You can download Python here: https://www.python.org/downloads/
+-   You can download VSCode here: https://code.visualstudio.com/download
+-   And here is a link to a tutorial on how to use VSCode if needed: https://code.visualstudio.com/docs/getstarted/getting-started
 
 ### Creating a Virtual Environment
 A Python virtual environment (venv) is a self-contained directory that allows you to install packages and dependencies for a specific project without affecting the global Python installation or other projects.
 
-1. Open a terminal in vscode and use `cd [insert absolute path to your project locally]` to navigate to the directory where you want to store your poject files.
+1. Open a terminal in VS Code and use `cd [insert absolute path to your project locally]` to navigate to the directory where you want to store your project files.
 2. Create a venv:
     - Enter `python -m venv [name-of-your-venv]` in the same terminal. 
     This should create a new folder with the name of your venv under your directory
 3. Activate the venv:
-    - for Mac/Linux users: `source ./name-of-your-venv/bin/activate `
-    - for Windows users: `.\name-of-your-venv\Scripts\activate`
+    - For Mac/Linux users: `source ./name-of-your-venv/bin/activate `
+    - For Windows users: `.\name-of-your-venv\Scripts\activate`
     - When prompted, type R and then enter to run once
-    - you should now see `(name-of-your-venv)` being appended to your input prompt, indicating that you have activated your venv
+    - You should now see `(name-of-your-venv)` being appended to your input prompt, indicating that you have activated your venv
 
 ### Install Python Libraries
 
@@ -66,12 +66,12 @@ pip install osmnx networkx geopandas folium scikit-learn
 
 ## Walkthrough
 
-We have supplied the map data on Learn to be used to create your maps and routes, it is called "ontario_drive_network.graphml". Download it. 
+We have supplied the map data on Learn to be used to create your maps and routes. It is called "ontario_drive_network.graphml". Download it. 
 Make sure to keep all the files used in this project in the same folder. 
 
 ### Create Nuclear Location File
 First, we will need a .geojson file to hold site names and coordinates.
-A csv file of the nuclear sites and their coordinates has been provided. Open this file in [GeoJSON.io](https://geojson.io/#map=2/0/20{target=_blank}) and save it as a GeoJSON file. You can find more detailed instructions [here](https://support.planet.com/hc/en-us/articles/360016337117-Creating-a-GeoJSON-file{target=_blank}).
+A CSV file of the nuclear sites and their coordinates has been provided. Open this file in [GeoJSON.io](https://geojson.io/#map=2/0/20) and save it as a GeoJSON file. You can find more detailed instructions [here](https://support.planet.com/hc/en-us/articles/360016337117-Creating-a-GeoJSON-file).
 
 <!-- <img src="/Route_Optimization_Subproblem/images/geojson.png" alt="GeoJSON file" height="250"> -->
 ```
@@ -89,7 +89,7 @@ A csv file of the nuclear sites and their coordinates has been provided. Open th
 ```
 Ensure that this new file is also in your project folder.
 
-From here, we can open our folder in VS code and create a new file for our main code. We need to import some libraries.
+From here, we can open our folder in VS Code and create a new file for our main code. We need to import some libraries.
 ```
 import osmnx as ox      
 import networkx as nx 
@@ -111,10 +111,10 @@ import pandas as pd
 | **from shapely.geometry import Point** |Used to create our fire source and discourage routing through it|
 | **from math import radians, cos, sin, sqrt, atan2**|For dist calculations|
 |**from shapely.ops import unary_union** | Combines multiple geometric objects|
-|**import pandas as pd** | Reads csv file|
+  |**import pandas as pd** | Reads CSV file|
 
 ### Load Nuclear Location File
-This line reads the geojson file we created and confirms for us that coordinates are in the correct format:
+This line reads the GeoJSON file we created and confirms for us that the coordinates are in the correct format:
 ```
 sites = gpd.read_file("nuclear_sites.geojson").to_crs(epsg=4326)
 ```
@@ -127,7 +127,7 @@ G = ox.load_graphml("ON_MB_Road_Data.graphml")
 <!-- <img src="/Route_Optimization_Subproblem/images/load_map.png" alt="Load map file" height="25"> -->
 
 ### Defining our Heuristic
-We can create a function to calculate the direct distance from a node to a site, which will be used when finding the fastest route. It will take three inputs, the first node, second node, and the road network.
+We can create a function to calculate the direct distance from a node to a site, which will be used when finding the fastest route. It will take three inputs: the first node, the second node, and the road network.
 ```
 def haversine(n1, n2, G):
     lon1, lat1 = G.nodes[n1]['x'], G.nodes[n1]['y']
@@ -145,17 +145,15 @@ In this function, we first find the longitude and latitude of the nodes from gra
     lon2, lat2 = G.nodes[n2]['x'], G.nodes[n2]['y']
 ```
 <!-- <img src="/Route_Optimization_Subproblem/images/haversine1.png" alt="Find longitude and latitude" height="50"> -->
-<!-- Now we need to set the radius of the sphere we are measuring on. In this case, we use earth, which has radius 6371 km. -->
-<!-- <img src="/Route_Optimization_Subproblem/images/haversine2.png" alt="Radius" height="25"> -->
 
-Then, we calculate the difference in longitude and latitude. We want to convert this to radians so that we can estimate the distance on the curve of the earth, as this uses trig functions:
+Then, we calculate the difference in longitude and latitude. We want to convert this to radians so that we can estimate the distance on the curve of the Earth, as this uses trig functions:
 ```
     dlon, dlat = radians(lon2 - lon1), radians(lat2 - lat1)
     a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
 ```
 <!-- <img src="/Route_Optimization_Subproblem/images/haversine3.png" alt="Distance calculation" height="50"> -->
 
-Finally, we calculate the distance and convert it to kilometers:
+Finally, we calculate the distance and convert it to kilometres:
 ```
     return 2 * R * atan2(sqrt(a), sqrt(1 - a))
 ```
@@ -172,14 +170,14 @@ bruce = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Bruce Power"].geome
 Repeat this for the other sites of interest (Ignace, Darlington, Chalk River Labs, etc.)
 
 ### Map Creation
-Now, we have to make some way of actually showing the route we've found, and for that we have folium. This will create an empty map centered around Ontario:
+Now, we have to make some way of actually showing the route we've found, and for that, we have folium. This will create an empty map centred around Ontario:
 ```
 m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
 ```
 <!-- <img src="/Route_Optimization_Subproblem/images/map_code.png" alt="Map creation" height="25"> -->
 
 ### Finding our Routes
-We can use a built in A* algorithm with our haversine heuristic to calculate the most optimal route between sites.
+We can use a built-in A* algorithm with our haversine heuristic to calculate the most optimal route between sites.
 ```
 route = nx.astar_path(G, start, end, heuristic=lambda a, b: haversine(a,b,G), weight="length")
 route_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route]
@@ -207,7 +205,7 @@ for name in sites["Name"]:
 ```
 <!-- <img src="/Route_Optimization_Subproblem/images/add_markers.png" alt="Add markers manually" height="175"> -->
 
-Finally, we have to save the map so that we can open it in our browser, and print out a message confirming we have saved successfully:
+Finally, we have to save the map so that we can open it in our browser and print out a message confirming that we have saved successfully:
 ```
 m.save("Optimized_Nuclear_Route.html")
 print("Map saved as Optimized_Nuclear_Route.html")
@@ -215,9 +213,9 @@ print("Map saved as Optimized_Nuclear_Route.html")
 <!-- <img src="/Route_Optimization_Subproblem/images/save_map.png" alt="Save map" height="50"> -->
 
 ### Identify Hazard Location and Radius
-<!-- Now that we have functioning code, consider the limitless possibile additions to make this solution more realistic. For example, We can add hazards, such as fires. -->
+<!-- Now that we have functioning code, consider the limitless possible additions to make this solution more realistic. For example, we can add hazards, such as fires. -->
 Now that we have functioning code, we can consider other elements such as fires.
-You many refer to the provided list of hazardous areas to avoid.
+You may refer to the provided list of hazardous areas to avoid.
 
 For example, we can set the midpoint of a fire and the size of the area around it:
 ```
@@ -226,7 +224,7 @@ fire_range_deg = 0.1
 ```
 <!-- <img src="/Route_Optimization_Subproblem/images/fire_location.png" alt="Fire location" height="50"> -->
 
-Now that we have set an area for the fire, we have to let the algorithm know that routing through it would be less optimal. To do this, we increase the weighting of the nodes within the specificed area.
+Now that we have set an area for the fire, we have to let the algorithm know that routing through it would be less optimal. To do this, we increase the weighting of the nodes within the specified area.
 ```
 for u, v, key, data in G.edges(keys=True, data=True):
     x = (G.nodes[u]['x'] + G.nodes[v]['x']) / 2
@@ -238,7 +236,7 @@ for u, v, key, data in G.edges(keys=True, data=True):
 <!-- <img src="/Route_Optimization_Subproblem/images/fire_penalty.png" alt="Hazard zone penalty" height="150"> -->
 
 ### Refuelling
-To tackle the refuelling problem, we first have to load the csv file of available gas station locations:
+To tackle the refuelling problem, we first have to load the CSV file of available gas station locations:
 ```
 gas_stations_df = pd.read_csv("Refuelling_Truck_Stops.csv")
 ```
@@ -254,7 +252,7 @@ gas_stations_df["graph_node"] = gas_station_nodes
 ```
 
 ### Calculate route with refuelling in mind
-The following checks whether the shortest truck route between our starting point and our destination would require refuelling, then calculates the shorest truck route to each gas station. If the route is shorter than our max distance, 1200 km, it saves that station into an array.
+The following checks whether the shortest truck route between our starting point and our destination would require refuelling, then calculates the shortest truck route to each gas station. If the route is shorter than our max distance, 1200 km, it saves that station in an array.
 ```
 max_distance_m = 1_200_000  # 1200 km
 reachable_stations = []
@@ -273,7 +271,7 @@ else:
     print(f"{start_name} - Destination within 1200 km, no refuelling necessary.")
 ```                
 
-Within that array, we can look for the route with the maximum distance because we want to refuel as little times as possible:
+Within that array, we can look for the route with the maximum distance because we want to refuel as few times as possible:
 ```
 if reachable_stations:
     refuelling_station = max(reachable_stations, key=lambda x: x[2])
@@ -284,10 +282,10 @@ if reachable_stations:
 else:
     print(f"{start_name} - No gas stations found within 1200 km.")
 ```
-Now that we've identified which gas station we want to stop at, we can use the A* algorithm as mentioned earlier to calculate the path we want to take. We can treat this as two seperate paths: from the starting location to the gas station, and from the gas station to the destination.
+Now that we've identified which gas station we want to stop at, we can use the A* algorithm as mentioned earlier to calculate the path we want to take. We can treat this as two separate paths: from the starting location to the gas station, and from the gas station to the destination.
 
-Okay let's get on to (in my opinion) the fun part. Remember how we mentioned earlier that we could put in markers for our map? 
-You can customimze the appearance of these markers. You can choose from a list of [colours](https://www.kaggle.com/code/aungdev/colors-available-for-marker-icons-in-folium{target=_blank}), and you can also add [icons](https://fontawesome.com/search?f=classic&s=solid&o=r{target=_blank}).
+Okay, let's get on to (in my opinion) the fun part. Remember how we mentioned earlier that we could put in markers for our map? 
+You can customize the appearance of these markers. You can choose from a list of [colours](https://www.kaggle.com/code/aungdev/colors-available-for-marker-icons-in-folium), and you can also add [icons](https://fontawesome.com/search?f=classic&s=solid&o=r).
 ```            
 for _, row in gas_stations_df.iterrows():
     station_node = row["graph_node"]
