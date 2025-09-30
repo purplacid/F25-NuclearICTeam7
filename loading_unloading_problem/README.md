@@ -29,7 +29,9 @@ How to interpret performance metrics of computer vision model: https://docs.ultr
 Alternate Training Methods (Google Collab / Local Linux) :  https://www.youtube.com/watch?v=etjkjZoG2F0&t=769s
 
 ----------------------------------------------------------------------
-## OPEN CV TUTORIAL :
+## 🖥️ 📸 OPEN CV TUTORIAL :
+
+![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challanger%20person%20and%20flask%20.png)
 ----------------------------------------------------------------------
 
 ## Project Setup
@@ -205,7 +207,6 @@ Deep dive into performance metrics can be found at: https://docs.ultralytics.com
 ## Model Deployment
 The following code snippets can be used to deploy your trained model with a live video feed. Just point your webcam at the scene and start monitoring: 
 
-![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challanger%20person%20and%20flask%20.png)
 ![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challange%20person%20.png)
 
 
@@ -374,6 +375,7 @@ def is_moving(result, target_class_name, dist_thresh_px):
 
    
    
+
 
 
 
