@@ -3,7 +3,7 @@ Welcome aboard!
 
 At Canadian National Laboratories (CNL), spent nuclear fuel is loaded into nuclear flasks and then transported from the nuclear power plant where it is generated, to a new nuclear waste repository in Northern Ontario located in Ingrace. Even with strict oversight, accidents can still occur. A critical moment during the transportation process is the loading and unloading of the nuclear flasks, which store the unused nuclear fuel. The challenge presented is making this process safe and more secure. If not handled carefully, exposed nuclear fuel can cause serious health issues to those working with it, and due to its unique qualities, it may be subject to theft. Ensuring that only the correct number of authorised personnel is working with the fuel at a time, as well as ensuring that the nuclear flask is in good condition, is imperative to transporting nuclear waste. More information on this sub-problem can be found [here.](https://uofwaterloo.sharepoint.com/:w:/r/sites/tm-eng-engineeringideasclinic/_layouts/15/Doc.aspx?sourcedoc=%7B64B1861D-5FC8-454E-A262-28F26CA1BE14%7D&file=New%20Case%20Study.docx&action=default&mobileredirect=true)
 
- **your challange:** Design a system to enable a safer nuclear transfer process between vehicles that minimizes the possibility of material tampering and unauthorized intrusion to the transfer site.  
+ **Your challenge:** Design a system to enable a safer nuclear transfer process between vehicles that minimizes the possibility of material tampering and unauthorized intrusion to the transfer site.  
 
  **Minimum Requirement for Solution:**
  
@@ -29,7 +29,7 @@ How to interpret performance metrics of computer vision model: https://docs.ultr
 Alternate Training Methods (Google Collab / Local Linux) :  https://www.youtube.com/watch?v=etjkjZoG2F0&t=769s
 
 ----------------------------------------------------------------------
-## OPEN CV TUTUORIAL :
+## OPEN CV TUTORIAL :
 ----------------------------------------------------------------------
 
 ## Project Setup
@@ -107,9 +107,9 @@ Datasets - The set of data that bases the system output on
 
    Test -  Images held out to measure final performance
 
-Label - tTlls the model in the dataset what object is what 
+Label - Tells the model in the dataset what object is what 
 
-Epoch - The round of trainning. The more rounds you run, the more accurate your model can be based on the provided images of the data set
+Epoch - The round of training. The more rounds you run, the more accurate your model can be based on the provided images of the data set
 
 Imgz - the size of the photos (L X W) in pixels
 
@@ -160,7 +160,7 @@ Find the download button and follow the same steps above
 
 --------------------------------------------------------------------------
 ## Training
-A custome model can be trained by using the yolo11-custom.py file
+A custom model can be trained by using the yolo11-custom.py file
 
 1. unzip the dataset file downloaded in the last step
 2. there should be a file in the zip called `data.yaml`
@@ -179,11 +179,11 @@ Tips:
 -----------------------------------------------------------------------------------
 
 ## Model Evaluation
-After your training is finished running, your code's structure should look like this. Theres a Runs folder. 
+After your training is finished running, your code's structure should look like this. There is a Runs folder. 
 
 ![alt text](Readme_Images/image5.png)
 
-If you have ran multiple trainings (incomplete ones count!), there will be folders called train, train1, train2, etc.. Click in the train folder that you would like to use. There should be several evaluation graphs given as below: 
+If you have run multiple trainings (incomplete ones count!), there will be folders called train, train1, train2, etc.. Click in the train folder that you would like to use. There should be several evaluation graphs given as below: 
 
 ![alt text](Readme_Images/image6.png)
 
@@ -203,7 +203,7 @@ Deep dive into performance metrics can be found at: https://docs.ultralytics.com
 --------------------------------------------------------------------------------------------------------
 
 ## Model Deployment
-The following code snippets can be used to deploy your trained model with live video feed. Just point your webcam to the scene and start monitoring: 
+The following code snippets can be used to deploy your trained model with a live video feed. Just point your webcam at the scene and start monitoring: 
 
 ![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challanger%20person%20and%20flask%20.png)
 ![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challange%20person%20.png)
@@ -374,6 +374,7 @@ def is_moving(result, target_class_name, dist_thresh_px):
 
    
    
+
 
 
 
