@@ -34,9 +34,9 @@ We will walk through the process of defining our heuristic, finding the nearest 
 ## Setup
 
 Before starting, make sure you have Python installed:
--   You can download Python here: https://www.python.org/downloads/
--   You can download VSCode here: https://code.visualstudio.com/download
--   And here is a link to a tutorial on how to use VSCode if needed: https://code.visualstudio.com/docs/getstarted/getting-started
+-   You can download Python [here](https://www.python.org/downloads/{target=_blank}).
+-   You can download VSCode [here](https://code.visualstudio.com/download{target=_blank}).
+-   Tutorial on how to use VSCode [here](https://code.visualstudio.com/docs/getstarted/getting-started{target=_blank}), if needed.
 
 ### Creating a Virtual Environment
 A Python virtual environment (venv) is a self-contained directory that allows you to install packages and dependencies for a specific project without affecting the global Python installation or other projects.
@@ -71,7 +71,7 @@ Make sure to keep all the files used in this project in the same folder.
 
 ### Create Nuclear Location File
 First, we will need a .geojson file to hold site names and coordinates.
-A csv file of the nuclear sites and their coordinates has been provided. Upload this file into [GeoJSON.io](https://geojson.io/#map=2/0/20) and save it as a GeoJSON file. You can find more detailed instructions [here](https://support.planet.com/hc/en-us/articles/360016337117-Creating-a-GeoJSON-file).
+A csv file of the nuclear sites and their coordinates has been provided. Open this file in [GeoJSON.io](https://geojson.io/#map=2/0/20{target=_blank}) and save it as a GeoJSON file. You can find more detailed instructions [here](https://support.planet.com/hc/en-us/articles/360016337117-Creating-a-GeoJSON-file{target=_blank}).
 
 <!-- <img src="/Route_Optimization_Subproblem/images/geojson.png" alt="GeoJSON file" height="250"> -->
 ```
@@ -287,7 +287,7 @@ else:
 Now that we've identified which gas station we want to stop at, we can use the A* algorithm as mentioned earlier to calculate the path we want to take. We can treat this as two seperate paths: from the starting location to the gas station, and from the gas station to the destination.
 
 Okay let's get on to (in my opinion) the fun part. Remember how we mentioned earlier that we could put in markers for our map? 
-You can customimze the appearance of these markers. You can choose from a list of [colours](https://www.kaggle.com/code/aungdev/colors-available-for-marker-icons-in-folium), and you can also add [icons](https://fontawesome.com/search?f=classic&s=solid&o=r).
+You can customimze the appearance of these markers. You can choose from a list of [colours](https://www.kaggle.com/code/aungdev/colors-available-for-marker-icons-in-folium{target=_blank}), and you can also add [icons](https://fontawesome.com/search?f=classic&s=solid&o=r{target=_blank}).
 ```            
 for _, row in gas_stations_df.iterrows():
     station_node = row["graph_node"]
