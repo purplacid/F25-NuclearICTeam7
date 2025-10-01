@@ -65,13 +65,13 @@ To avoid the tedious task of manually adding rows and rows of fake data, you can
 #### 2. Add basic widgets
 Looker Studio gives you building blocks called widgets to create dashboards. You can use them however you'd like to present the data for your intended audience. 
 
-| Widget type       | Use case                                                              |   |   |   |   |   |   |   |   |
-|-------------------|-----------------------------------------------------------------------|---|---|---|---|---|---|---|---|
-| Table             | Show all active alerts, historical logs, etc.                         |   |   |   |   |   |   |   |   |
-| Bar chart         | Show alert counts by region, facility, or type                        |   |   |   |   |   |   |   |   |
-| Time series       | Display alert trends over time                                        |   |   |   |   |   |   |   |   |
-| Google Maps chart | Plot transport routes or incident locations using latitude/longitude  |   |   |   |   |   |   |   |   |
-| Filter controls   | Let users filter by alert type, date, status, or location             |   |   |   |   |   |   |   |   |
+| Widget type       | Use case                                                              |
+|-------------------|-----------------------------------------------------------------------|
+| Table             | Show all active alerts, historical logs, etc.                         |
+| Bar chart         | Show alert counts by region, facility, or type                        |
+| Time series       | Display alert trends over time                                        |
+| Google Maps chart | Plot transport routes or incident locations using latitude/longitude  |
+| Filter controls   | Let users filter by alert type, date, status, or location             |   
 
 As an example, to set up a line graph that displays truck speed over time, along with a filter to switch between the truck: 
 1. In the toolbar, click **"Add chart"** > **"Line"** > **"Line chart"**
