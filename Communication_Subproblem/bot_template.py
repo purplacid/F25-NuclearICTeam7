@@ -32,8 +32,8 @@ client = Client()
 client.login(username, password)
 
 # TODO: fetch data using gspread and generate message 
-alert_message = "Radiation leakage along Provincial Rd 211" # replace with appropriate alert 
-status = "Response underway." # replace with appropriate status (e.g. "Response underway")
+alert_message = "Radiation along 211 is now contained." # replace with appropriate alert 
+status = "Situation is resolved." # replace with appropriate status (e.g. "Response underway")
 
 # TODO: Translate coordinates to general location
 location = "Pinawa"
