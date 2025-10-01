@@ -50,7 +50,7 @@ jobs:
       # Run the bot's script 
       - name: Run Bot Script 
         run: |
-          python "Communication Subproblem/app_template.py"
+          python Communication_Subproblem/bot_template.py
           echo "Bot feed refreshed"
 
 
