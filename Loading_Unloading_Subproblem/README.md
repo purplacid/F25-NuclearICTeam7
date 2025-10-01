@@ -31,7 +31,7 @@ Alternate Training Methods (Google Collab / Local Linux) :  https://www.youtube.
 ----------------------------------------------------------------------
 ## 🖥️ 📸 OPEN CV TUTORIAL :
 
-![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challanger%20person%20and%20flask%20.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/Nuclear_challenge_person_and_flask.png)
 ----------------------------------------------------------------------
 
 ## Project Setup
@@ -50,7 +50,7 @@ Challenge can run with cpu-only devices, but training and execution speed can be
    `py --list`  
    Python 3.12 should be listed like below:
 
-![alt text](/loading_unloading_problem/Readme_Images/1a.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/1a.png)
 
 ---
 
@@ -61,11 +61,11 @@ Challenge can run with cpu-only devices, but training and execution speed can be
 3. type: `py -3.12 -m venv .venv`  
 4. you should now see a folder called .venv in your project  
 
-![alt text](/loading_unloading_problem/Readme_Images/2a.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/2a.png)
 
-6. type: `.\.venv\Scripts\activate` to activate your virtual environment, your prompt head should become like this below:  
+5. type: `.\.venv\Scripts\activate` to activate your virtual environment, your prompt head should become like this below:  
 
-![alt text](/loading_unloading_problem/Readme_Images/3a.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/3a.png)
 
 ---
 
@@ -80,7 +80,7 @@ Challenge can run with cpu-only devices, but training and execution speed can be
 
 3. On Pytorch website, select the following settings.
 
-![alt text](/loading_unloading_problem/Readme_Images/4a.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/4a.png)
 
 4. Change the CUDA version to whatever displayed on your nvidia-smi output. If your CUDA version has no exact match, choose the closest. (Ex: 12.6 can be chosen for CUDA version 12.5)  
 
@@ -128,14 +128,10 @@ You can choose to collect your own training images, or download training sets fr
 1. Connect your webcam to your device
 2. Run image_capturer and capture image contanining your target objects
 
-Tips to collect good dataset： 
-
-- Include background clutter and partial occlusions.
-
-- Vary angles, distances, lighting.
-
-- Keep labels balanced—avoid 95% of one class and 5% of another.
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tips to collect good dataset： <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Include background clutter and partial occlusions. <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Vary angles, distances, lighting. <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Keep labels balanced—avoid 95% of one class and 5% of another. <br/>
 
 3. Visit Roboflow https://app.roboflow.com and create a project
 4. Create a project, choose "Object Detection" as type. Clicking yes should take you to this page: 
@@ -144,7 +140,7 @@ Tips to collect good dataset：
 6. Navigate to "Classes & Tags" and input the classes you intent to track
 7. Go to Annotate → Label Myself → Start Annotating.
 8. For any objects that exists in the image, use the crossbow to draw a tight bounding box over it and select what class it belongs to. Continue until all images are labeled.
-![alt text](./Readme_Images/Screenshot%202025-08-14%20204020.png)
+![alt text](./Readme_Images/Screenshot_2025-08-14_204020.png)
 9. After, click back out and back to the Annotate section. Click on each of the Annotating sets, select "Add to dataset"
 10. in Method, select “Split Images Between Train/Valid?test" and then click Add
 
@@ -207,7 +203,7 @@ Deep dive into performance metrics can be found at: https://docs.ultralytics.com
 ## Model Deployment
 The following code snippets can be used to deploy your trained model with a live video feed. Just point your webcam at the scene and start monitoring: 
 
-![alt text](/loading_unloading_problem/Readme_Images/Nuclear%20challange%20person%20.png)
+![alt text](/Loading_Unloading_Subproblem/Readme_Images/Nuclear_challenge_person.png)
 
 
 ```python
@@ -375,6 +371,7 @@ def is_moving(result, target_class_name, dist_thresh_px):
 
    
    
+
 
 
 
