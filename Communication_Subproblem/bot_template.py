@@ -21,7 +21,7 @@ sheet = gc.open('Nuclear_challenge_data').sheet1
 
 # Bluesky Connection
 # Load in credentials from credentials.json
-with open("secrets/credentials.json", "r") as f: 
+with open("Communication_Subproblem/secrets/credentials.json", "r") as f: 
     creds = json.load(f)
 
 username = creds["BLUESKY_USERNAME"]
@@ -32,8 +32,8 @@ client = Client()
 client.login(username, password)
 
 # TODO: fetch data using gspread and generate message 
-alert_message = "Radiation leakage along Provincial Rd 211" # replace with appropriate alert 
-status = "Response underway." # replace with appropriate status (e.g. "Response underway")
+alert_message = "Radiation along 211 is now contained." # replace with appropriate alert 
+status = "Situation is resolved." # replace with appropriate status (e.g. "Response underway")
 
 # TODO: Translate coordinates to general location
 location = "Pinawa"

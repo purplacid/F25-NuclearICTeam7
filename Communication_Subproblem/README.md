@@ -109,7 +109,7 @@ For more advanced features of Looker Studio, read the [documentation](https://cl
 ### 📣 Part 2: Bluesky Alert Bot    
 
 ---
-
+![Bluesky bot feed](README_images/bot_feed.png)
 #### What is an API?
 An Application Programming Interface (API) serves as the connection between two or more software applications. It's now an ubiquitous part of software development, and its wide application includes connecting the interface of a website to its backend database, facilitating interactions between devices (e.g. smart lightbulb and a phone), and embedding content from another website onto your own. In this problem template, a Python script will access the Bluesky API to make automated alert posts. 
 
