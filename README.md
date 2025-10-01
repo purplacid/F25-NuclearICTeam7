@@ -30,7 +30,7 @@ Your team at **CNL** has been tasked to design the **various monitoring systems*
 
 Your Task is to develop a solution to one or more of these subproblems that withstands CNL's expectations and standards. You may also find a **unique way to combine solutions** across multiple areas. Remember: **time is of the essence!** Top scientists at CNL will be arriving in **two days** to assess your results.
 
-Please remember to work pragmatically and safely. For general guidelines, please review **2618_questions_and_answers_ _safe_and_secure_transporta.pdf** 
+Please remember to work pragmatically and safely. For more information, please review **2618_questions_and_answers_ _safe_and_secure_transporta.pdf** 
 
 
 ---
@@ -39,7 +39,7 @@ Please remember to work pragmatically and safely. For general guidelines, please
 
 ### 1. Environmental Challenges and Route Planning  
 
-Transport will take place **year-round across 4 provinces**, so several environmental factors could impact the safe travel of trucks carrying nuclear material such as.  
+Transport will take place **year-round across 4 provinces**—Ontario, Manitoba, Quebec, and New Brunswick, so several environmental factors could impact the safe travel of trucks carrying nuclear material such as:
 
 - A **forest fire** in southeastern Manitoba, causing debris, smoke, and obstacles  
 - **Flooding** in Northern Ontario, affecting the Trans-Canada Highway (often the only option)  
@@ -48,7 +48,8 @@ Transport will take place **year-round across 4 provinces**, so several environm
 
 **Challenge:**  
 Design a system to optimize truck routing given environmental challenges and on-route resources (e.g., gas stations).
-**Please read the Route Optimization SubProblem for more information and work done by your predecessor**  
+**Please read the Route Optimization SubProblem for more detailed information.**
+
 The example solution provided in the [Route_Optimization_Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Route_Optimization_Subproblem) creates a map and plans the most optimal route from several nuclear sites (marked blue) to the planned repository location (marked green). The system accounts for environmental obstacles and weather events that might make a route less desirable, such as a forest fire placed along the initial route (red marked area).  
 
 
@@ -67,7 +68,7 @@ Design a system to enable a **safe nuclear transfer process** that minimizes the
 
 ## Vehicle State Monitoring  
 
-Trucks will be travelling from **All Four provinces to the deposition site in Ignace**, transporting spent fuel to the deep repository. This includes traveling through various environments and weather conditions, each impacting the transport vehicle such as.  
+Trucks will be travelling from **all four provinces to the deposition site in Ignace**, transporting spent fuel to the deep repository. This includes traveling through various environments and weather conditions, each impacting the transport vehicle such as.  
 
 - **Vibrations** on uneven ground increase the risk of containers or fastenings coming loose  
 - **Rain** reduces visibility and creates slippery road conditions  
@@ -77,7 +78,7 @@ Trucks will be travelling from **All Four provinces to the deposition site in Ig
 Spent fuel is transported in heavily shielded casks. Radiation is very difficult to detect externally, but if shielding is compromised, **radiation leakage** becomes possible.  
 
 ### Challenge  
-For this challenge, instead of real radiation, an **IR emitter** will be used as a substitute. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. Groundwork provided by your predecessor in the [Sensor Package Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Sensor%20Package%20Subproblem) files covers in-depth methods of implementing various sensors and tools to gauge the conditions of the transport truck accurately. 
+For this challenge, instead of real radiation, an **IR emitter** will be used as a substitute. Your team is tasked with developing a system to **improve planning, monitoring, or reacting** to vehicle and container state changes. The [Sensor Package Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Sensor%20Package%20Subproblem) files covers in-depth methods of implementing various sensors and tools to gauge the conditions of the transport truck accurately. 
 
 
 ---
@@ -105,7 +106,7 @@ Create a system specialized to **improve communication with authorities, adminis
 An important part of any large-scale transport operation is **public communication**.  
 
 ### Challenge  
-Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. Work provided by your predecessor, located in the [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem) file,  includes interactive dashboards as well as advanced communication and state monitoring tools. 
+Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. The [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem) file includes interactive dashboards as well as advanced communication and state monitoring tools. 
 
 ---
 

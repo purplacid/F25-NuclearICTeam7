@@ -32,12 +32,12 @@ client = Client()
 client.login(username, password)
 
 # TODO: fetch data using gspread and generate message 
-alert_message = "alert" # replace with appropriate alert 
-status = "status" # replace with appropriate status (e.g. "Response underway")
+alert_message = "Radiation leakage along Provincial Rd 211" # replace with appropriate alert 
+status = "Response underway." # replace with appropriate status (e.g. "Response underway")
 
 # TODO: Translate coordinates to general location
-location = "location"
+location = "Pinawa"
 
 # Publish post
-post = client.send_post('Major alert for ' + location + ":" + alert_message + '.' + 
+post = client.send_post('Major alert for ' + location + ": " + alert_message + '. ' + 
 status)
