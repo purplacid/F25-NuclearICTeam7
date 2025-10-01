@@ -21,16 +21,16 @@ Your task is to design such a **communication system**, with information separat
 This subproblem highlights the importance of responsible communication in critical infrastructure. The public should be informed, but not exposed to sensitive operational details. At the same time, internal teams must have access to detailed, real-time data for decision-making and emergency response.
 
 ### Potential Solutions 
-* *Two communication dashboards, one for the public and one for the authorities, that contain real-time updates on the truck's general location, status, and other relevant information.*
-* *A social media bot that posts alerts in the event of transport incidents*  
-* *A mobile app that sends alert notifications in the event of transport incidents, which will only be displayed to people whose location is close to the incident* 
+* Two communication dashboards, one for the public and one for the authorities, that contain real-time updates on the truck's general location, status, and other relevant information.  
+* A social media bot that posts alerts in the event of transport incidents  
+* A mobile app that sends alert notifications in the event of transport incidents, which will only be displayed to people whose location is close to the incident 
 
 <br>
-🛠️ For this challenge, we will provide the blueprints for a two-part solution: Looker Studio dashboards (which can can split between public and internal communications) and a Bluesky alert bot.
+🛠️ Here are the blueprints for a two-part solution: Looker Studio dashboards (which can can split between public and internal communications) and a Bluesky alert bot.
 
 ## Resources and links
 * [**Link to Google Sheets dataset**](https://docs.google.com/spreadsheets/d/1OjUgnxIO0DFm4mhyJQ-2K-jQ2L1gPBy0DVwrID45a6Y/edit?usp=sharing): Make a copy to adjust and add new data to your liking. 
-* [**CSV datasets**](Communication_Subproblem/Datasets): Datasets in CSV form to edit with other methods. 
+* [**CSV datasets**](Datasets): Datasets in CSV form to edit with other methods. 
 
 ### Dashboard 
 * [**Link to example dashboard**](https://lookerstudio.google.com/reporting/a84d67a1-7bff-4ee6-bcbf-a2a09847bf65): A basic public-facing dashboard example
@@ -60,7 +60,7 @@ It’s perfect for building simulated alert dashboards, interactive maps, or pub
 #### Connect Google Sheets to Looker Studio
 We've provided a link to the Google Sheets spreadsheets containing the starting data. You can make a copy of it and use it as a the data source for your dashboard. 
 
-1. Visit lookerstudio.google.com
+1. Visit [lookerstudio.google.com](https://lookerstudio.google.com)
 
 2. Click **“Blank Report”** or **“+ Create”** > **"Report"**
 
@@ -87,7 +87,7 @@ Looker Studio gives you building blocks called widgets to create dashboards. You
 As an example, to set up a line graph that displays truck speed over time, along with a filter to switch between the truck: 
 1. In the toolbar, click **"Add chart"** > **"Line"** > **"Line chart"**
 
-2. In the **"Line chart properties"** tab, set the **"Data source"** as the **truck_transport** sheet of your spreadsheet. 
+2. In the **"Line chart properties"** tab, set the **"Data source"** as the **standard_transport** sheet of your spreadsheet. 
 
 3. For **"Dimension"**, set **Timestamp (Date Hour Minute)**.
 
@@ -95,7 +95,7 @@ As an example, to set up a line graph that displays truck speed over time, along
 
 5. In the toolbar again, click **"Add a control"** and choose **"Drop-down list"**
 
-6. After setting the Data source, choose **Truck ID** For the **"Control Field"**
+6. After setting the Data source to **standard_transport** again, choose **Truck ID** For the **"Control Field"**
 
 Now you can toggle between the two trucks using the filter to see their respective speeds over time on the line chart. 
 
@@ -207,7 +207,7 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
 Try running the code. You should see it publish a new post on your feed. 
 
 #### Automate via Github Action
-We are going to use Github Action for a no-cost way of deploying the "bot". Github Action is a powerful tool that can automate creating new packages, deploying apps, listening for events and conditionally performing actions based on them, and more. [Here's](https://www.youtube.com/watch?v=mFFXuXjVgkU) a great introduction video, but today we are simply using it to run the bot's script every 15 minute. 
+We are going to use Github Action for a no-cost way of deploying the "bot". Github Action is a powerful tool that can automate creating new packages, deploying apps, listening for events and conditionally performing actions based on them, and more. [Here's](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU) a great introduction video, but today we are simply using it to run the bot's script every 15 minute. 
 
 1. Go to the Github repository of your project. Go to **"Settings"** > **"Security"** > **"Secrets and variables"** > **Actions**.  
 
