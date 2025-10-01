@@ -1,18 +1,5 @@
 # ⚠️ Alerts and Communication Subproblem 
 
-## For me: todos
-
-* Update main front page README
-
-* Final sections for this README:
-    * Social media bot code section 
-    * FAQ
-    * Images
-
-* user testing
-
-* judging form
-
 ## Problem Description 
  Though CNL has developed the security systems to ensure safe and effective transport of the nuclear waste, they can never be truly failsafe. In the case of an incident, alerts must be rapidly disseminated to contain the hazards and minimize casualties. 
 
@@ -38,9 +25,10 @@ This subproblem highlights the importance of responsible communication in critic
 
 
 ### Social Media bot
-* [**Bluesky Developer's Documentation**](https://gemini.google/subscriptions/): 
-* [**gspread Documentation**](https://gemini.google/subscriptions/):
-* [**Github Action introduction tutorial**](https://gemini.google/subscriptions/):
+* [**Bluesky Developer's Documentation**](https://docs.bsky.app/docs/get-started): 
+* [**gspread Documentation**](https://docs.gspread.org/en/latest/):
+* [**Geocoding and Reverse Geocoding Guide**](https://thepythoncode.com/article/get-geolocation-in-python):
+* [**Github Action introduction tutorial**](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU):
 ## Solution Template
 
 ### 📊 Part 1: Public and Internal Dashboard
@@ -188,7 +176,7 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
 4. Write this snippet into your script to decode ``credentials.json`` and use the username and password in your script.
     ``` python
     # Load in credentials from credentials.json
-    with open("secrets/credentials.json", "r") as f: 
+    with open("my_repository/secrets/credentials.json", "r") as f: 
         creds = json.load(f)
 
     username = creds["BLUESKY_USERNAME"]
@@ -201,10 +189,17 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
     client = Client()
     client.login(username, password)
     ```
+    
 #### Write your code 
+You can publish a post with: 
+   ``` python
+   post = client.send_post('This is an alert.')
+   ```
+But a preset, unchanging alert wouldn't be very helpful. You must now retrieve the data from Google Sheets and use it to configure the content of your dynamic message. 
 
+Consider first finding the row with the latest timestamp, and then accessing the rest of the information (address, status, alert message) from there. 
 
-Try running the code. You should see it publish a new post on your feed. 
+**Hint:** For the address portion of the message, you can translate the coordinates in the Google Sheets to actual physical addresses with [reverse geocoding](https://thepythoncode.com/article/get-geolocation-in-python).
 
 #### Automate via Github Action
 We are going to use Github Action for a no-cost way of deploying the "bot". Github Action is a powerful tool that can automate creating new packages, deploying apps, listening for events and conditionally performing actions based on them, and more. [Here's](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU) a great introduction video, but today we are simply using it to run the bot's script every 15 minute. 
@@ -273,14 +268,14 @@ We are going to use Github Action for a no-cost way of deploying the "bot". Gith
         # Run the bot's script 
         - name: Run Bot Script 
             run: |
-            python "Communication Subproblem/app_template.py"
+            python "my_repository/bot_template.py"
             echo "Bot feed refreshed"
     ```
     YAML is a very easy language to learn, so you are encouraged to play around with the script and add additional logic.  
 
 7. Test that the script work by going to the **Actions** tab of your repository and manually running the Workflow. 
 
-Now your bot should be automated to run every 15 minute. If you want to stop it from continuously posting, you can disable the workflow until you need to present it. 
+Now your bot should be automated to run every 15 minute. If you want to stop it from continuously posting, you can disable the workflow (the options menu in the top left) until you need to present it. 
 
 You are free to deploy the bot in other ways, such as by using any of the popular cloud infrastructure providers. Options that include generous free trials/always-free plans are [Google Cloud](https://cloud.google.com/free) and [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/free/).
 
@@ -294,12 +289,4 @@ You are free to deploy the bot in other ways, such as by using any of the popula
 
 ## FAQs
 
-
-## Citations
-
-https://medium.com/@thibautdonis1998/automating-your-workflows-on-a-schedule-github-actions-cron-fd7e662083c6  
-
-https://docs.bsky.app/docs/get-started  
-
-https://spreadsheetpoint.com/connect-python-and-google-sheets-15-minute-guide/
 
