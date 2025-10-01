@@ -14,7 +14,7 @@ Design a system to optimize truck routing given environmental challenges and on-
 
 Resources provided:
 [Click here to access them!](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Route_Optimization_Subproblem/Location_Coordinates)
-- Map file "ontario_drive_network.graphml" (Can be found on Learn)
+- Map file "ontario_drive_network.graphml" (Can be found on [Learn](https://learn.uwaterloo.ca/d2l/le/content/1017258/viewContent/6226498/View))
 - Coordinates of nuclear sites
 - Coordinates of potential hazards
 - Coordinates of available refuelling stations
