@@ -21,7 +21,7 @@ sheet = gc.open('Nuclear_challenge_data').sheet1
 
 # Bluesky Connection
 # Load in credentials from credentials.json
-with open("/secrets/credentials.json", "r") as f: 
+with open("Communication_Subproblem/secrets/credentials.json", "r") as f: 
     creds = json.load(f)
 
 username = creds["BLUESKY_USERNAME"]
