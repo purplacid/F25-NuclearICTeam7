@@ -45,7 +45,7 @@ Google Looker Studio is a free web-based data visualization tool by Google. It a
 
 It’s perfect for building simulated alert dashboards, interactive maps, or public information panels as part of this challenge. 
 
-#### Connect Google Sheets to Looker Studio
+#### 1. Connect Google Sheets to Looker Studio
 We've provided a link to the Google Sheets spreadsheets containing the starting data. You can make a copy of it and use it as a the data source for your dashboard. 
 
 1. Visit [lookerstudio.google.com](https://lookerstudio.google.com)
@@ -61,7 +61,8 @@ We've provided a link to the Google Sheets spreadsheets containing the starting 
 The template provides data such as the speed and statuses of the transport trucks, key locations, and a log of past incidents. However, you may find that you want to add new data for the story you want to tell.  
 
 To avoid the tedious task of manually adding rows and rows of fake data, you can use LLMs to generate them for you. [**Google Gemini**](https://gemini.google/subscriptions/) on a 1-month free trial is highly recommended as Gemini can manipulate and fill in cells directly in Google sheets. Just remember to cancel the trial after finishing your solution. 
-#### Add basic widgets
+
+#### 2. Add basic widgets
 Looker Studio gives you building blocks called widgets to create dashboards. You can use them however you'd like to present the data for your intended audience. 
 
 | Widget type       | Use case                                                              |   |   |   |   |   |   |   |   |
@@ -106,7 +107,7 @@ Bluesky is a decentralized social media platform that looks and functions simila
 
 Most importantly, it's a relevant platform to deploy an alert bot because of its free API access. While Twitter has greatly reduced the posting and read limits on its API's Free tier, Bluesky's completely free-to-access API makes the bot easy to scale without cost limitations. 
 
-#### Setting up Google Sheet API 
+#### 1. Setting up Google Sheet API 
 1.  Set up Google Cloud  
 
     i. Log into [Google Cloud](https://cloud.google.com/). Do this by following the link, scrolling down, and clicking **"Go to my console."**  
@@ -157,7 +158,7 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
     ```
     Now you can refer to specific columns, tables, rows, and more from your Google Sheets. Read more about how to use gspread [here](https://docs.gspread.org/en/latest/). 
 
-#### Setting up social media connection
+#### 2. Setting up social media connection
 1. Start by reading and understanding the developer's documentation for your social media platform of choice. The documentation for Bluesky is available [here](https://docs.bsky.app/).
 
 2. Set up a new account and save the username and password in a ``credentials.json`` file. Move that file into a ``secrets`` subfolder. It's good practice to not write the API credentials directly in your script and instead access it from somewhere else. 
@@ -190,7 +191,7 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
     client.login(username, password)
     ```
     
-#### Write your code 
+#### 3. Write your code 
 You can publish a post with: 
    ``` python
    post = client.send_post('This is an alert.')
@@ -201,7 +202,7 @@ Consider first finding the row with the latest timestamp, and then accessing the
 
 **Hint:** For the address portion of the message, you can translate the coordinates in the Google Sheets to actual physical addresses with [reverse geocoding](https://thepythoncode.com/article/get-geolocation-in-python).
 
-#### Automate via Github Action
+#### 4. Automate via Github Action
 We are going to use Github Action for a no-cost way of deploying the "bot". Github Action is a powerful tool that can automate creating new packages, deploying apps, listening for events and conditionally performing actions based on them, and more. [Here's](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU) a great introduction video, but today we are simply using it to run the bot's script every 15 minute. 
 
 1. Go to the Github repository of your project. Go to **"Settings"** > **"Security"** > **"Secrets and variables"** > **Actions**.  
