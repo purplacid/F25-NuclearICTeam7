@@ -20,7 +20,10 @@ Examples of some relevant emergencies might include:
 - Fires
 - Radiation leaks
 
+
 Alert drivers/authorities immediately if anomalies occur!
+
+![Sample Solution](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/blob/main/Sensor%20Package%20Subproblem/sensor_pckg_main/SensorPackSolution.JPG?raw=true)
 
 ---
 ## Tools Provided
