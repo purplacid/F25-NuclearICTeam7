@@ -117,7 +117,7 @@ Several of the sensors provided, such as the LCD display, AHT20 and IMU, all use
 Radiation is simulated using infrared emitters and sensors. The emitter has already been created and is part of the radiation source package. The output of the sensor is low and needs to be amplified through an Op-Amp.
 
 #### IR Sensor connections
-See [Datasheet](https://www.vishay.com/docs/81509/bpv22nf.pdf). With the spherical side facing towards you, the anode is the left leg and the cathode the right leg. Connect the Anode to the Arduino 5V and a 1K resistor from the Anode to ground. Connect the cathode to the non-inverting input of the Op-amp. Connect the output ot the inverting input using a 100k resistor and the inverting input to ground using a 1k resistor. Connect the VCC to the Arduino 5V and the VEE to ground. Connect the output to an Arduino analog pin to read the sensor data. 
+See [Datasheet](https://www.vishay.com/docs/81509/bpv22nf.pdf). With the spherical side facing towards you, the anode is the left leg and the cathode the right leg. Here is one configuration of the sensor: Connect the Anode to the Arduino 5V and a 10K resistor from the Anode to ground. Connect the cathode to two 100k resistors. Connect one resistor to an Arduino analog pin and the second to ground. The sensor data can be read using the analog pin.  ![Circuit Diagram](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/blob/main/Sensor%20Package%20Subproblem/sensor_pckg_main/nuclearSensorCirc.jpg?raw=true) Our sensors only have 2 pins; ignore the middle pin in the diagram. 
 
 ##### Notes:
 Reading the sensor data is simple, using `analogRead(analogPin)`
