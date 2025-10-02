@@ -23,8 +23,6 @@ Examples of some relevant emergencies might include:
 
 Alert drivers/authorities immediately if anomalies occur!
 
-![Sample Solution](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/blob/main/Sensor%20Package%20Subproblem/sensor_pckg_main/SensorPackSolution.JPG?raw=true)
-
 ---
 ## Tools Provided
 
@@ -55,6 +53,8 @@ Alert drivers/authorities immediately if anomalies occur!
 - Wires, Resistors and breadboard
   
   Students are not required to use all (or any) of the provided tools to create their solution 
+
+![Sample Solution](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/blob/main/Sensor%20Package%20Subproblem/sensor_pckg_main/SensorPackSolution.JPG?raw=true)
 
 ## ⚙️ Documentation and Reference Material
 
