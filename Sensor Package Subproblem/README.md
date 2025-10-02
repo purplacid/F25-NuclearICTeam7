@@ -114,7 +114,7 @@ The LCD Screen will require the library: `Grove-LCD RGB Backlight`
 Several of the sensors provided, such as the LCD display, AHT20 and IMU, all use I2C communication. When wiring I2C, connect the SLC on the sensors to the SLC of the Arduino, and likewise connect sensor SDC to Arduino SDC. You can connect as many sensors as needed to use I2C as long as the addresses of each sensor are different. This, however, should not be an issue as the libraries will use a different address for each sensor. Using multiple of the same I2C sensors will be more complicated
 
 #### Simulating Radiation
-Radiation is simulated using infrared emitters and sensors. The emitter has already been created and is part of the radiation source package. The output of the sensor is low and needs to be amplified through an Op-Amp.
+Radiation is simulated using infrared emitters and sensors. The emitter has already been created and is part of the radiation source package.
 
 #### IR Sensor connections
 See [Datasheet](https://www.vishay.com/docs/81509/bpv22nf.pdf). With the spherical side facing towards you, the anode is the left leg and the cathode the right leg. Here is one configuration of the sensor: Connect the Anode to the Arduino 5V and a 10K resistor from the Anode to ground. Connect the cathode to two 100k resistors. Connect one resistor to an Arduino analog pin and the second to ground. The sensor data can be read using the analog pin.  ![Circuit Diagram](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/blob/main/Sensor%20Package%20Subproblem/sensor_pckg_main/nuclearSensorCirc.jpg?raw=true) Our sensors only have 2 pins; ignore the middle pin in the diagram. 
