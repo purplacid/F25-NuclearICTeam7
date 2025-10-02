@@ -83,30 +83,14 @@ For this challenge, instead of real radiation, an **IR emitter** will be used as
 
 ---
 
-## Communications with Authorities  
+## Alerts and Communication 
+In the case of an emergency, timely alerts must be sent out to both **the authorities and the public**. The authorities must get a comprehensive overview of the situation so that they can prepare their response accordingly, while the public must be warned of threats and any safety measures to follow. 
 
-Effective **communication systems** are essential to ensure the operational integrity of nuclear waste transport. Ensuring that the proper safety measures are taken into consideration to mitigate and effectively respond to hazardous situations, such as: 
-
-- Collision  
-- Route deviation  
-- Container breach  
-- Alarming sensor readings 
+A system is needed for transforming raw vehicle state data into actionable information, and then effectively communicating them. Effective communication must consider style, audience, and the channel through which you communicate. Communication in the system can happen through multiple channels such as social media and an internal real-time dashboard.  
 
 ### Challenge  
-Create a system specialized to **improve communication with authorities, administration, or the public** in the event of an emergency.   
+Create a system specialized to **improve communication with authorities, administration, and the public** in the event of an emergency. The example solution is provided in the [Communication Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem), which includes a **public dashboard and a Bluesky alert bot**. 
 
-### Potential Solutions  
-- Simulate an **emergency alert** (e.g., text, light, or sound) that activates near the transport vehicle if a high-risk event occurs  
-- Implement a **logging & escalation mechanism** with progressive alerts depending on severity  
-- Enable **inter-vehicular/dispatch communication**  
-
-
-## Public Warnings Communication  
-
-An important part of any large-scale transport operation is **public communication**.  
-
-### Challenge  
-Design a system for communication between **transport management and the public**, to provide detailed and necessary information to either the authorities, the Public, or an external party monitoring who is tasked with monitoring the truck as it commutes. The [Communication subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem) file includes interactive dashboards as well as advanced communication and state monitoring tools. 
 
 ---
 
