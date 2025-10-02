@@ -25,10 +25,10 @@ This subproblem highlights the importance of responsible communication in critic
 
 
 ### Social Media bot
-* [**Bluesky Developer's Documentation**](https://docs.bsky.app/docs/get-started): 
-* [**gspread Documentation**](https://docs.gspread.org/en/latest/):
-* [**Geocoding and Reverse Geocoding Guide**](https://thepythoncode.com/article/get-geolocation-in-python):
-* [**Github Action introduction tutorial**](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU):
+* [**Bluesky Developer's Documentation**](https://docs.bsky.app/docs/get-started): Documentation for learning how to use Bluesky's API 
+* [**gspread Documentation**](https://docs.gspread.org/en/latest/): Documentation for learning how to use gspread to access and manipulate Google Sheets data
+* [**Geocoding and Reverse Geocoding Guide**](https://thepythoncode.com/article/get-geolocation-in-python): Guide for using geocoding to translate addresses to coordinates, and vice versa 
+* [**Github Action introduction tutorial**](https://www.youtube.com/watch_popup?v=mFFXuXjVgkU): Introduction video for using Github Action to automate Github workflows
 ## Solution Template
 
 ### 📊 Part 1: Public and Internal Dashboard
