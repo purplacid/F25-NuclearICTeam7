@@ -53,7 +53,7 @@ Design a system to optimize truck routing given environmental challenges and on-
 The example solution provided in the [Route_Optimization_Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Route_Optimization_Subproblem) creates a map and plans the most optimal route from several nuclear sites (marked blue) to the planned repository location (marked green). The system accounts for environmental obstacles and weather events that might make a route less desirable, such as a forest fire placed along the initial route (red marked area).  
 
 
-## Loading & Unloading  
+## 2. Loading & Unloading  
 
 The continuous monitoring of nuclear materials during all stages of transportation is vital for ensuring the **safety of the materials, the environment, and the personnel involved**.  
 
@@ -66,7 +66,7 @@ Design a system to enable a **safe nuclear transfer process** that minimizes the
  
 ---
 
-## Vehicle State Monitoring  
+## 3. Vehicle State Monitoring  
 
 Trucks will be travelling from **all four provinces to the deposition site in Ignace**, transporting spent fuel to the deep repository. This includes traveling through various environments and weather conditions, each impacting the transport vehicle such as.  
 
@@ -83,7 +83,7 @@ For this challenge, instead of real radiation, an **IR emitter** will be used as
 
 ---
 
-## Alerts and Communication 
+## 4. Alerts and Communication 
 In the case of an emergency, timely alerts must be sent out to both **the authorities and the public**. The authorities must get a comprehensive overview of the situation so that they can prepare their response accordingly, while the public must be warned of threats and any safety measures to follow. 
 
 A system is needed for transforming raw vehicle state data into actionable information, and then effectively communicating them. Effective communication must consider style, audience, and the channel through which you communicate. Communication in the system can happen through multiple channels such as social media and an internal real-time dashboard.  
