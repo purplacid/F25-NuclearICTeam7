@@ -132,13 +132,22 @@ Most importantly, it's a relevant platform to deploy an alert bot because of its
 
     iii. Grant Editor permissions to the email. 
 
-4. Connect your Python script  
-
-    i. In your terminal, install the necessary libraries (replace atproto if you are not using Bluesky):
+4. Connect your Python script
+   
+    i. Create a virtual environment for your packages by typing the following in your terminal. 
+    ``` bash
+    python -m venv [environment-name]
+    source environment-name/bin/activate
+    ```
+    To deactivate the virtual environment after you're done, just use:
+    ```bash
+    deactivate
+    ```
+    ii. Now you can install the necessary libraries (replace atproto if you are not using Bluesky):
     ``` bash
      pip install gspread google-auth atproto
     ```  
-    ii. Write the following code into your bot script:  
+    iii. Write the following code into your bot script:  
     ``` python
     import gspread
     from google.oauth2.service_account import Credentials
