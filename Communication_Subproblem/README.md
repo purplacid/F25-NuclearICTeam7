@@ -272,9 +272,16 @@ We are going to use Github Action for a no-cost way of deploying the "bot". Gith
             python "my_repository/bot_template.py"
             echo "Bot feed refreshed"
     ```
-    YAML is a very easy language to learn, so you are encouraged to play around with the script and add additional logic.  
+    YAML is a very easy language to learn, so you are encouraged to play around with the script and add additional logic.
+   
+7. Make a ``requirement.txt`` file in your repository that includes the following modules:
+   ``` python
+   atproto
+   gspread
+   google-auth
+   ```
 
-7. Test that the script work by going to the **Actions** tab of your repository and manually running the Workflow. 
+8. Test that the script work by going to the **Actions** tab of your repository and manually running the Workflow. 
 
 Now your bot should be automated to run every 15 minute. If you want to stop it from continuously posting, you can disable the workflow (the options menu in the top left) until you need to present it. 
 
