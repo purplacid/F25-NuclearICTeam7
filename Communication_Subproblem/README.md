@@ -295,6 +295,3 @@ You are free to deploy the bot in other ways, such as by using any of the popula
 * Interactivity (e.g. reply to the bot to get more detailed information.)  
 * Better organization of posts (e.g. instead of sending out individual posts, consolidate some into threads)
 
-## FAQs
-
-
