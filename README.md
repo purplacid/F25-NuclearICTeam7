@@ -92,5 +92,5 @@ Create a system specialized to **improve communication with authorities, adminis
 ---
 
 ## Documents
-You can find the judging rubric, presentation template and group signups in this [google drive folder](https://drive.google.com/drive/folders/1HSpPK-RUN6NwezttZxGLrhhvPRYHUJKT?usp=sharing). 
+You can find the judging rubric, presentation template, group signups, etc. in this [google drive folder](https://drive.google.com/drive/folders/1HSpPK-RUN6NwezttZxGLrhhvPRYHUJKT?usp=sharing). 
 Good luck and have fun!
