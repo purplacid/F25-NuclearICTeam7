@@ -88,3 +88,9 @@ A system is needed for transforming raw vehicle state data into actionable infor
 
 #### Challenge:  
 Create a system specialized to **improve communication with authorities, administration, and the public** in the event of an emergency. The example solution outlined in the [Communication Subproblem](https://github.com/IdeasClinicUWaterloo/F25-NuclearIC/tree/main/Communication_Subproblem) includes a **public dashboard and a Bluesky alert bot**. 
+
+---
+
+## Documents
+You can find the judging rubric, presentation template and group signups in this [google drive folder](https://drive.google.com/drive/folders/1HSpPK-RUN6NwezttZxGLrhhvPRYHUJKT?usp=sharing). 
+Good luck and have fun!
