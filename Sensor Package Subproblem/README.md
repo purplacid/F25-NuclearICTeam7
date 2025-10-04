@@ -59,7 +59,7 @@ Alert drivers/authorities immediately if anomalies occur!
 ## ⚙️ Documentation and Reference Material
 
 - **Microcontroller:** Arduino Uno R4 Minima
-- **Grove Sensor Kit:** [Grove Sensor Setup](https://github.com/IdeasClinicUWaterloo/Technologies-Utilized-for-Idea-s-Clinic-Challenges/blob/main/Seed%20Grove%20Kit/GUIDE.md)
+- **Grove Sensor Kit:** [Grove Sensor Setup](https://github.com/IdeasClinicUWaterloo/Technologies-Utilized-for-Idea-s-Clinic-Challenges/blob/main/Seed%20Grove%20Kit/GUIDE.md), [Grove Sensor Wiki](https://wiki.seeedstudio.com/Grove_Starter_Kit_v3/#grove---rotary-angle-sensor), [Grove Code Starter Kit](https://github.com/Seeed-Studio/Sketchbook_Starter_Kit_V2.0/blob/master/README.md)
 - **Additional Sensors:**
 
     - [DFRobot BMX160 9-Axis IMU](https://wiki.dfrobot.com/BMX160_9-axis_Sensor_Module_SKU_SEN0373)
