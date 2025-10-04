@@ -1,0 +1,122 @@
+import osmnx as ox      
+import networkx as nx 
+import geopandas as gpd
+import folium       
+from shapely.geometry import Point      
+from math import radians, cos, sin, sqrt, atan2     
+from shapely.ops import unary_union     
+import pandas as pd     
+
+sites = gpd.read_file("nuclear_sites.geojson").to_crs(epsg=4326)
+G = ox.load_graphml("ON_MB_Road_Data.graphml")
+
+def haversine(n1, n2, G):
+    lon1, lat1 = G.nodes[n1]['x'], G.nodes[n1]['y']
+    lon2, lat2 = G.nodes[n2]['x'], G.nodes[n2]['y']
+    R = 6371  # Earth radius in km
+    dlon, dlat = radians(lon2 - lon1), radians(lat2 - lat1)
+    a = sin(dlat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon/2)**2
+    return 2 * R * atan2(sqrt(a), sqrt(1 - a))
+
+bruce = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Bruce Power"].geometry.iloc[0].x,
+                                     sites[sites["Name"] == "Bruce Power"].geometry.iloc[0].y)
+
+pickering = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Pickering"].geometry.iloc[0].x,
+                                         sites[sites["Name"] == "Pickering"].geometry.iloc[0].y)
+
+darlington = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Darlington"].geometry.iloc[0].x,
+                                           sites[sites["Name"] == "Darlington"].geometry.iloc[0].y)
+
+chalk_river = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Chalk River"].geometry.iloc[0].x,
+                                           sites[sites["Name"] == "Chalk River"].geometry.iloc[0].y)
+
+ignace = ox.distance.nearest_nodes(G, sites[sites["Name"] == "Ignace"].geometry.iloc[0].x,
+                                       sites[sites["Name"] == "Ignace"].geometry.iloc[0].y)
+
+m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_bruce=5)
+
+route_bruce = nx.astar_path(G, bruce, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
+route_coords_bruce = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route_bruce]
+folium.PolyLine(route_coords_bruce, color="blue", weight=5, tooltip=f"Bruce to Ignace").add_to(m)
+
+route_pickering = nx.astar_path(G, pickering, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
+route_coords_pickering = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route_pickering]
+folium.PolyLine(route_coords_pickering, color="blue", weight=5, tooltip=f"Pickering to Ignace").add_to(m)
+
+route_darlington = nx.astar_path(G, darlington, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
+route_coords_darlington = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route_darlington]
+folium.PolyLine(route_coords_darlington, color="blue", weight=5, tooltip=f"Darlington to Ignace").add_to(m)
+
+route_chalk_river = nx.astar_path(G, chalk_river, ignace, heuristic=lambda a, b: haversine(a,b,G), weight="length")
+route_coords_chalk_river = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route_chalk_river]
+folium.PolyLine(route_coords_chalk_river, color="blue", weight=5, tooltip=f"Chalk River to Ignace").add_to(m)
+
+for name in sites["Name"]:
+    row = sites[sites["Name"] == name]
+    folium.Marker(
+        location=[row.geometry.y.values[0], row.geometry.x.values[0]],
+        popup=name,
+        icon=folium.Icon(color="purple" if name == "Ignace" else "blue")
+    ).add_to(m)
+
+fire_location = Point(-82.7569, 47.5939)
+fire_range_deg = 0.1  
+
+for u, v, key, data in G.edges(keys=True, data=True):
+    x = (G.nodes[u]['x'] + G.nodes[v]['x']) / 2
+    y = (G.nodes[u]['y'] + G.nodes[v]['y']) / 2
+    midpoint = Point(x, y)
+    if fire_location.buffer(fire_range_deg).contains(midpoint):
+       data["length"] *= 10000
+
+gas_stations_df = pd.read_csv("Refuelling_Truck_Stops.csv")
+
+gas_station_nodes = [
+    ox.distance.nearest_nodes(G, row["Longitude"], row["Latitude"])
+    for _, row in gas_stations_df.iterrows()
+]
+
+gas_stations_df["graph_node"] = gas_station_nodes
+gas_station_nodes = [
+    ox.distance.nearest_nodes(G, row["Longitude"], row["Latitude"])
+    for _, row in gas_stations_df.iterrows()
+]
+
+gas_stations_df["graph_node"] = gas_station_nodes
+
+max_distance_m = 1_200_000  # 1200 km
+reachable_stations = []
+
+if nx.shortest_path_length(G, bruce, ignace, weight="length") >= max_distance_m:   
+    for _, row in gas_stations_df.iterrows():
+        station_node = row["graph_node"]
+        try:
+            dist_to_station = nx.shortest_path_length(G, bruce, station_node, weight="length")
+            if dist_to_station <= max_distance_m:
+                reachable_stations.append((row["Truck stop"], station_node, dist_to_station))
+        except nx.NetworkXNoPath:
+            continue    # Skip if there's no valid path
+
+else:
+    print(f"Ignace - Destination within 1200 km, no refuelling necessary.")
+
+if reachable_stations:
+    refuelling_station = max(reachable_stations, key=lambda x: x[2])
+    refuelling_station_node = refuelling_station[1]
+
+    print(f"Bruce - Chosen gas station: {refuelling_station[0]} at {refuelling_station[2]/1000:.2f} km")
+
+else:
+    print(f"Bruce - No gas stations found within 1200 km.")
+
+for _, row in gas_stations_df.iterrows():
+    station_node = row["graph_node"]
+    folium.Marker(
+        location=[row["Latitude"], row["Longitude"]],
+        popup=f"⛽ Chosen Gas Station: {row["Truck stop"]}",
+        icon=folium.Icon(color="green", icon="gas-pump", prefix="fa")
+    ).add_to(m)
+
+
+m.save("Optimized_Nuclear_Route.html")
+print("Map saved as Optimized_Nuclear_Route.html")
