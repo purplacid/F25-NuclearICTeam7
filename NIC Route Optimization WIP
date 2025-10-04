@@ -1,16 +1,11 @@
-import osmnx as ox      
-import networkx as nx 
-import geopandas as gpd
-import folium       
 import osmnx as ox
 import networkx as nx
 import geopandas as gpd
 import folium
-from shapely.geometry import Point
+from shapely.geometry import Point, LineString
+from shapely.ops import unary_union
 from math import radians, sin, cos, atan2, sqrt
 import pandas as pd
-
-
 def haversine(n1, n2, G):
     """Return great-circle distance (km) between two graph nodes."""
     lon1, lat1 = G.nodes[n1]['x'], G.nodes[n1]['y']
@@ -52,6 +47,32 @@ ignace = ox.distance.nearest_nodes(
 )
 
 
+# --- Hazards: load, buffer and enforce avoidant pathing ---------------
+# Load hazards and build buffers; these buffers are used to inflate edge lengths
+# so routing avoids them. Radii (in degrees) are heuristics and can be tuned.
+hazards_df = pd.read_csv("Hazards.csv")
+
+def hazard_radius(name: str) -> float:
+    if "Fire" in name:
+        return 0.10
+    if "Flood" in name:
+        return 0.05
+    return 0.05
+
+hazards_df["geometry"] = [Point(r["Longitude"], r["Latitude"]) for _, r in hazards_df.iterrows()]
+hazard_buffers = [geom.buffer(hazard_radius(name)) for name, geom in zip(hazards_df["Hazards"], hazards_df["geometry"])]
+hazard_union = unary_union(hazard_buffers)
+
+# Inflate length for edges whose midpoint is inside any hazard buffer so
+# pathfinding will tend to avoid them.
+for u, v, key, data in G.edges(keys=True, data=True):
+    x = (G.nodes[u]["x"] + G.nodes[v]["x"]) / 2
+    y = (G.nodes[u]["y"] + G.nodes[v]["y"]) / 2
+    midpoint = Point(x, y)
+    if hazard_union.contains(midpoint):
+        data["length"] *= 10000
+
+
 # --- Map and base routes -------------------------------------------------
 m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
 
@@ -76,16 +97,33 @@ for _, site in sites.iterrows():
     ).add_to(m)
 
 
-# --- Apply fire / disrupted edges (keeps original behaviour) -------------
-#fire_location = Point(-82.7569, 47.5939)
-#fire_range_deg = 0.1
-for u, v, key, data in G.edges(keys=True, data=True):
-    x = (G.nodes[u]['x'] + G.nodes[v]['x']) / 2
-    y = (G.nodes[u]['y'] + G.nodes[v]['y']) / 2
-    midpoint = Point(x, y)
-    if fire_location.buffer(fire_range_deg).contains(midpoint):
-        # Inflate length so pathfinding avoids this edge
-        data["length"] *= 10000
+# --- Annotate hazards that affect each route -----------------------------
+from collections import defaultdict
+route_lines = {}
+for name, nodes in routes.items():
+    xs = [G.nodes[n]["x"] for n in nodes]
+    ys = [G.nodes[n]["y"] for n in nodes]
+    # LineString expects (x, y) tuples
+    route_lines[name] = LineString(list(zip(xs, ys)))
+
+# Determine which hazards intersect each route and mark them
+hazard_affected_by = defaultdict(list)
+for i, row in hazards_df.iterrows():
+    buf = hazard_buffers[i]
+    for origin_name, route_line in route_lines.items():
+        if buf.intersects(route_line):
+            hazard_affected_by[i].append(origin_name)
+
+for i, row in hazards_df.iterrows():
+    affected = hazard_affected_by.get(i, [])
+    lat = row["Latitude"]
+    lon = row["Longitude"]
+    if affected:
+        popup = f"{row['Hazards']} - affects routes: {', '.join(affected)}"
+        folium.CircleMarker(location=[lat, lon], radius=8, color="red", fill=True, fill_opacity=0.8, popup=popup).add_to(m)
+        print(popup)
+    else:
+        folium.CircleMarker(location=[lat, lon], radius=4, color="orange", fill=True, fill_opacity=0.6, popup=row['Hazards']).add_to(m)
 
 
 # --- Gas stations (load once) -------------------------------------------
