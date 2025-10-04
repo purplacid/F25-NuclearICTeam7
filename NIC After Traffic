@@ -1,0 +1,235 @@
+import osmnx as ox
+import networkx as nx
+import geopandas as gpd
+import folium
+from shapely.geometry import Point, LineString
+from shapely.ops import unary_union
+from math import radians, sin, cos, atan2, sqrt
+import pandas as pd
+def haversine(n1, n2, G):
+    """Return great-circle distance (km) between two graph nodes."""
+    lon1, lat1 = G.nodes[n1]['x'], G.nodes[n1]['y']
+    lon2, lat2 = G.nodes[n2]['x'], G.nodes[n2]['y']
+    R = 6371.0
+    dlon, dlat = radians(lon2 - lon1), radians(lat2 - lat1)
+    a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
+    return 2 * R * atan2(sqrt(a), sqrt(1 - a))
+
+
+# --- Load data and graph -------------------------------------------------
+sites = gpd.read_file("nuclear_sites.geojson").to_crs(epsg=4326)
+G = ox.load_graphml("ON_MB_Road_Data.graphml")
+
+# Named origin nodes
+origins = {
+    "Bruce": ox.distance.nearest_nodes(
+        G, sites[sites["Name"] == "Bruce Power"].geometry.iloc[0].x,
+        sites[sites["Name"] == "Bruce Power"].geometry.iloc[0].y
+    ),
+    "Pickering": ox.distance.nearest_nodes(
+        G, sites[sites["Name"] == "Pickering"].geometry.iloc[0].x,
+        sites[sites["Name"] == "Pickering"].geometry.iloc[0].y
+    ),
+    "Darlington": ox.distance.nearest_nodes(
+        G, sites[sites["Name"] == "Darlington"].geometry.iloc[0].x,
+        sites[sites["Name"] == "Darlington"].geometry.iloc[0].y
+    ),
+    "Chalk River": ox.distance.nearest_nodes(
+        G, sites[sites["Name"] == "Chalk River"].geometry.iloc[0].x,
+        sites[sites["Name"] == "Chalk River"].geometry.iloc[0].y
+    ),
+}
+
+# Destination
+ignace = ox.distance.nearest_nodes(
+    G, sites[sites["Name"] == "Ignace"].geometry.iloc[0].x,
+    sites[sites["Name"] == "Ignace"].geometry.iloc[0].y,
+)
+
+
+
+# --- Hazards: load, buffer and enforce avoidant pathing ---------------
+# Load hazards and build buffers; these buffers are used to inflate edge lengths
+# so routing avoids them. Radii (in degrees) are heuristics and can be tuned.
+hazards_df = pd.read_csv("Hazards.csv")
+traffic_df = pd.read_csv("TrafficToAvoid.csv")
+
+def hazard_radius(name: str) -> float:
+    if "Fire" in name:
+        return 0.10
+    if "Flood" in name:
+        return 0.05
+    if "Traffic" in name:
+        return 0.009  # ~1km in degrees
+    return 0.05
+
+# Add geometry to hazards_df
+hazards_df["geometry"] = [Point(r["Longitude"], r["Latitude"]) for _, r in hazards_df.iterrows()]
+
+# Integrate traffic as hazards
+traffic_hazards = []
+for _, row in traffic_df.iterrows():
+    try:
+        lat = float(row["CORRESPONDING LAT"])
+        lon = float(row["corr long"])
+        if not (pd.isna(lat) or pd.isna(lon)):
+            traffic_hazards.append({
+                "Hazards": "Traffic",
+                "Latitude": lat,
+                "Longitude": lon,
+                "geometry": Point(lon, lat)
+            })
+    except Exception:
+        continue
+
+if traffic_hazards:
+    traffic_df2 = pd.DataFrame(traffic_hazards)
+    hazards_df = pd.concat([hazards_df, traffic_df2], ignore_index=True)
+
+# Build buffers for all hazards
+hazard_buffers = [geom.buffer(hazard_radius(name)) for name, geom in zip(hazards_df["Hazards"], hazards_df["geometry"])]
+hazard_union = unary_union(hazard_buffers)
+
+# Inflate length for edges whose midpoint is inside any hazard buffer so
+# pathfinding will tend to avoid them.
+for u, v, key, data in G.edges(keys=True, data=True):
+    x = (G.nodes[u]["x"] + G.nodes[v]["x"]) / 2
+    y = (G.nodes[u]["y"] + G.nodes[v]["y"]) / 2
+    midpoint = Point(x, y)
+    if hazard_union.contains(midpoint):
+        data["length"] *= 10000
+
+
+# --- Map and base routes -------------------------------------------------
+m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
+
+def draw_route_and_get_nodes(G, origin_node, dest_node, color="blue", tooltip=None):
+    route = nx.astar_path(G, origin_node, dest_node, heuristic=lambda a, b: haversine(a, b, G), weight="length")
+    coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route]
+    folium.PolyLine(coords, color=color, weight=5, tooltip=tooltip).add_to(m)
+    return route
+
+# Draw all routes and keep route nodes if needed later
+routes = {}
+for name, origin_node in origins.items():
+    tooltip = f"{name} to Ignace"
+    routes[name] = draw_route_and_get_nodes(G, origin_node, ignace, color="blue", tooltip=tooltip)
+
+# Add nuclear site markers
+for _, site in sites.iterrows():
+    folium.Marker(
+        location=[site.geometry.y, site.geometry.x],
+        popup=site["Name"],
+        icon=folium.Icon(color="purple" if site["Name"] == "Ignace" else "blue")
+    ).add_to(m)
+
+
+# --- Annotate hazards that affect each route -----------------------------
+from collections import defaultdict
+route_lines = {}
+for name, nodes in routes.items():
+    xs = [G.nodes[n]["x"] for n in nodes]
+    ys = [G.nodes[n]["y"] for n in nodes]
+    # LineString expects (x, y) tuples
+    route_lines[name] = LineString(list(zip(xs, ys)))
+
+# Determine which hazards intersect each route and mark them
+hazard_affected_by = defaultdict(list)
+for i, row in hazards_df.iterrows():
+    buf = hazard_buffers[i]
+    for origin_name, route_line in route_lines.items():
+        if buf.intersects(route_line):
+            hazard_affected_by[i].append(origin_name)
+
+for i, row in hazards_df.iterrows():
+    affected = hazard_affected_by.get(i, [])
+    lat = row["Latitude"]
+    lon = row["Longitude"]
+    if affected:
+        popup = f"{row['Hazards']} - affects routes: {', '.join(affected)}"
+        folium.CircleMarker(location=[lat, lon], radius=8, color="red", fill=True, fill_opacity=0.8, popup=popup).add_to(m)
+        print(popup)
+    else:
+        folium.CircleMarker(location=[lat, lon], radius=4, color="orange", fill=True, fill_opacity=0.6, popup=row['Hazards']).add_to(m)
+
+
+# --- Gas stations (load once) -------------------------------------------
+gas_stations_df = pd.read_csv("Refuelling_Truck_Stops.csv")
+gas_station_nodes = [
+    ox.distance.nearest_nodes(G, row["Longitude"], row["Latitude"])
+    for _, row in gas_stations_df.iterrows()
+]
+gas_stations_df["graph_node"] = gas_station_nodes
+
+max_distance_m = 1_200_000  # 1200 km
+
+
+def find_refuelling_station(G, origin_node, dest_node, gas_df, max_distance_m):
+    """Return (truck_stop_name, graph_node, dist_m) or None.
+
+    Logic: if the origin->destination shortest path is shorter than max_distance_m
+    then no refuelling is necessary (returns None). Otherwise, find gas stations
+    reachable from the origin within max_distance_m and pick the furthest one
+    (greedy so it maximizes distance before refuelling).
+    """
+    try:
+        od_dist = nx.shortest_path_length(G, origin_node, dest_node, weight="length")
+    except nx.NetworkXNoPath:
+        return None
+
+    if od_dist < max_distance_m:
+        return None
+
+    reachable = []
+    for _, row in gas_df.iterrows():
+        station_node = row["graph_node"]
+        try:
+            d = nx.shortest_path_length(G, origin_node, station_node, weight="length")
+            if d <= max_distance_m:
+                reachable.append((row["Truck stop"], station_node, d))
+        except nx.NetworkXNoPath:
+            continue
+
+    if not reachable:
+        return None
+
+    # Choose the furthest reachable station from the origin (max distance)
+    return max(reachable, key=lambda x: x[2])
+
+
+# --- Apply refuelling selection for every origin route ------------------
+chosen_stations = {}
+colors = {"Bruce": "red", "Pickering": "orange", "Darlington": "purple", "Chalk River": "darkgreen"}
+for name, origin_node in origins.items():
+    station = find_refuelling_station(G, origin_node, ignace, gas_stations_df, max_distance_m)
+    if station:
+        stop_name, stop_node, dist_m = station
+        chosen_stations[name] = station
+        # Mark chosen station (distinct color per origin)
+        # find dataframe row for coordinates
+        row = gas_stations_df[gas_stations_df["graph_node"] == stop_node].iloc[0]
+        folium.Marker(
+            location=[row["Latitude"], row["Longitude"]],
+            popup=f"{name} - Chosen Gas Station: {stop_name} ({dist_m/1000:.1f} km)",
+            icon=folium.Icon(color=colors.get(name, "red"), icon="gas-pump", prefix="fa")
+        ).add_to(m)
+        print(f"{name} - Chosen gas station: {stop_name} at {dist_m/1000:.2f} km")
+    else:
+        print(f"{name} - No refuelling required or no reachable gas station within {max_distance_m/1000:.0f} km")
+
+
+# Add generic markers for all gas stations (lighter, so chosen ones stand out)
+for _, row in gas_stations_df.iterrows():
+    folium.CircleMarker(
+        location=[row["Latitude"], row["Longitude"]],
+        radius=3,
+        color="green",
+        fill=True,
+        fill_opacity=0.6,
+        popup=f"⛽ Gas Station: {row['Truck stop']}"
+    ).add_to(m)
+
+
+# Save map
+m.save("Optimized_Nuclear_Route.html")
+print("Map saved as Optimized_Nuclear_Route.html")
