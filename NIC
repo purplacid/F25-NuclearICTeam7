@@ -348,9 +348,10 @@ for i, row in hazards_df.iterrows():
             hazard_affected_by[i].append(origin_name)
 
 for i, row in hazards_df.iterrows():
-    # Only plot hazards within 15km of each route
-    for name in origins:
-        route_buffer = route_lines[name].buffer(0.135)
+    # Make hazards more visible and only plot those within 15km of any route
+    for name, route_nodes in routes.items():
+        route_line = route_lines[name]
+        route_buffer = route_line.buffer(0.135)  # ~15 km
         if route_buffer.intersects(row["geometry"]):
             affected = hazard_affected_by.get(i, [])
             lat = row["Latitude"]
@@ -358,7 +359,7 @@ for i, row in hazards_df.iterrows():
             hazard_type = row["Hazards"]
             color_map = {
                 "Fire": "orange",
-                "Flood": "blue",
+                "Flood": "darkblue",
                 "Traffic": "red",
                 "PoorRoad": "grey",
                 "Poor Road": "grey"
@@ -370,11 +371,13 @@ for i, row in hazards_df.iterrows():
                     break
             if not color:
                 color = "black"
-            if affected:
-                popup = f"{hazard_type} - affects routes: {', '.join(affected)}"
-                folium.CircleMarker(location=[lat, lon], radius=8, color=color, fill=True, fill_opacity=0.8, popup=popup).add_to(m)
-            else:
-                folium.CircleMarker(location=[lat, lon], radius=4, color=color, fill=True, fill_opacity=0.6, popup=hazard_type).add_to(m)
+            popup = f"{hazard_type} - affects routes: {', '.join(affected)}" if affected else hazard_type
+            # Use caution symbol for hazards, keep color
+            folium.Marker(
+                location=[lat, lon],
+                popup=popup,
+                icon=folium.Icon(color=color, icon="exclamation-triangle", prefix="fa")
+            ).add_to(m)
 
 
 # --- Gas stations (load once) -------------------------------------------
@@ -458,11 +461,17 @@ def find_refuelling_station(G, origin_node, dest_node, gas_df, max_distance_m):
 chosen_stations = {}
 colors = {"Bruce": "red", "Pickering": "orange", "Darlington": "purple", "Chalk River": "darkgreen"}
 for name, origin_node in origins.items():
-    station = find_refuelling_station(G, origin_node, ignace, gas_stations_df, max_distance_m)
+    # Only consider gas stations within 15 km of the route
+    route_line = route_lines[name]
+    route_buffer = route_line.buffer(0.135)
+    filtered_gas_df = gas_stations_df[
+        gas_stations_df.apply(lambda row: route_buffer.contains(Point(row["Longitude"], row["Latitude"])), axis=1)
+    ]
+    station = find_refuelling_station(G, origin_node, ignace, filtered_gas_df, max_distance_m)
     if station:
         stop_name, stop_node, dist_m = station
         chosen_stations[name] = station
-        row = gas_stations_df[gas_stations_df["graph_node"] == stop_node].iloc[0]
+        row = filtered_gas_df[filtered_gas_df["graph_node"] == stop_node].iloc[0]
         hours = (dist_m / 1000) / 90
         # Highlight chosen rest stop with a large star marker
         folium.Marker(
