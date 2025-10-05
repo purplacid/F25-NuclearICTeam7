@@ -457,15 +457,19 @@ for _, row in hazards_df.iterrows():
         icon=folium.Icon(color=style["color"], icon=style["icon"], prefix="fa")
     ).add_to(m)
 
-# Add truck rest area markers
+# Add truck rest area markers only if they're within 30km of any route
 try:
     rest_areas = fetch_truck_rest_areas()
     for area in rest_areas:
-        folium.Marker(
-            location=[area["lat"], area["lon"]],
-            popup=area["name"],
-            icon=folium.Icon(color="purple", icon="bed", prefix="fa")
-        ).add_to(m)
+        point = Point(area["lon"], area["lat"])
+        # Check if the rest area is within 30km of any route (0.27 degrees ≈ 30km)
+        is_near_route = any(route_line.buffer(0.27).contains(point) for route_line in route_lines.values())
+        if is_near_route:
+            folium.Marker(
+                location=[area["lat"], area["lon"]],
+                popup=f"Rest Area: {area['name']}",
+                icon=folium.Icon(color="purple", icon="bed", prefix="fa")
+            ).add_to(m)
 except Exception as e:
     pass
 
@@ -584,6 +588,22 @@ for i, row in hazards_df.iterrows():
             popup=f"Buffer zone for {hazard_type}"
         ).add_to(m)
 
+
+# Add truck rest area markers only if they're within 30km of any route
+try:
+    rest_areas = fetch_truck_rest_areas()
+    for area in rest_areas:
+        point = Point(area["lon"], area["lat"])
+        # Check if the rest area is within 30km of any route (0.27 degrees ≈ 30km)
+        is_near_route = any(route_line.buffer(0.27).contains(point) for route_line in route_lines.values())
+        if is_near_route:
+            folium.Marker(
+                location=[area["lat"], area["lon"]],
+                popup=f"Rest Area: {area['name']}",
+                icon=folium.Icon(color="purple", icon="bed", prefix="fa")
+            ).add_to(m)
+except Exception as e:
+    pass
 
 # --- Gas stations (load once) -------------------------------------------
 gas_stations_df = pd.read_csv("Refuelling_Truck_Stops.csv")
