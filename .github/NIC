@@ -6,6 +6,10 @@ from shapely.geometry import Point, LineString
 from shapely.ops import unary_union
 from math import radians, sin, cos, atan2, sqrt
 import pandas as pd
+import requests
+import polyline
+import time
+start_time = time.time()
 def haversine(n1, n2, G):
     """Return great-circle distance (km) between two graph nodes."""
     lon1, lat1 = G.nodes[n1]['x'], G.nodes[n1]['y']
@@ -47,21 +51,211 @@ ignace = ox.distance.nearest_nodes(
 )
 
 
+
 # --- Hazards: load, buffer and enforce avoidant pathing ---------------
 # Load hazards and build buffers; these buffers are used to inflate edge lengths
 # so routing avoids them. Radii (in degrees) are heuristics and can be tuned.
 hazards_df = pd.read_csv("Hazards.csv")
+traffic_df = pd.read_csv("TrafficToAvoid.csv")
+
+# --- Fetch API data for road conditions and rest areas ---
+import concurrent.futures
+import functools
+
+def fetch_api_data(url, timeout=10):
+    try:
+        resp = requests.get(url, timeout=timeout)
+        return resp.json()
+    except Exception:
+        return None
+
+def fetch_drifting_poor_segments():
+    url = "https://511on.ca/api/v2/get/roadconditions"
+    # Fetching road conditions (silent)
+    data = fetch_api_data(url)
+    if not data:
+        return []
+    
+    hazards = []
+    for seg in data:
+        drifting = seg.get("Drifting", "No")
+        condition = seg.get("Condition", [])
+        if drifting == "Yes" and any("Poor" in c for c in condition):
+            poly = seg.get("EncodedPolyline")
+            if poly:
+                coords = polyline.decode(poly)
+                hazards.append(LineString(coords))
+    return hazards
+
+def fetch_truck_rest_areas():
+    url = "https://511on.ca/api/v2/get/truckrestareas"
+    # Fetching truck rest areas (silent)
+    data = fetch_api_data(url)
+    if not data:
+        return []
+    
+    rest_areas = []
+    for area in data:
+        try:
+            if "EncodedPolyline" in area:
+                coords = polyline.decode(area["EncodedPolyline"])[0]
+                rest_areas.append({
+                    "lat": coords[0],
+                    "lon": coords[1],
+                    "name": area.get("LocationDescription", "Truck Rest Area")
+                })
+            elif "Latitude" in area and "Longitude" in area:
+                rest_areas.append({
+                    "lat": float(area["Latitude"]),
+                    "lon": float(area["Longitude"]),
+                    "name": area.get("LocationDescription", "Truck Rest Area")
+                })
+        except Exception as e:
+            print(f"Error processing rest area: {e}")
+            continue
+    return rest_areas
+
+def fetch_all_api_data():
+    """Fetch all API data in parallel"""
+    urls = {
+        'road_conditions': "https://511on.ca/api/v2/get/roadconditions",
+        'rest_areas': "https://511on.ca/api/v2/get/truckrestareas",
+        'construction': "https://511on.ca/api/v2/get/constructionprojects"
+    }
+    
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+        futures = {executor.submit(fetch_api_data, url): name 
+                  for name, url in urls.items()}
+        results = {}
+        for future in concurrent.futures.as_completed(futures):
+            name = futures[future]
+            try:
+                results[name] = future.result()
+            except Exception as e:
+                pass
+                results[name] = None
+    return results
 
 def hazard_radius(name: str) -> float:
     if "Fire" in name:
         return 0.10
     if "Flood" in name:
         return 0.05
+    if "Traffic" in name:
+        return 0.027  # ~3km in degrees - traffic impacts spread wider
+    if "Construction" in name:
+        # Extract delay time from name format "Construction (Xmin delay)"
+        try:
+            delay = int(''.join(filter(str.isdigit, name.split('(')[1].split('min')[0])))
+            # Scale radius based on delay (max 3km = 0.027 degrees)
+            # 10 min = 1km, 30+ min = 3km, linear scale between
+            return min(0.009 + (delay - 10) * (0.027 - 0.009) / 20, 0.027) if delay >= 10 else 0.009
+        except:
+            return 0.009  # Default to 1km if parsing fails
     return 0.05
 
-hazards_df["geometry"] = [Point(r["Longitude"], r["Latitude"]) for _, r in hazards_df.iterrows()]
-hazard_buffers = [geom.buffer(hazard_radius(name)) for name, geom in zip(hazards_df["Hazards"], hazards_df["geometry"])]
-hazard_union = unary_union(hazard_buffers)
+# Add geometry to hazards_df efficiently using vectorized operations
+hazards_df["geometry"] = gpd.points_from_xy(hazards_df["Longitude"], hazards_df["Latitude"])
+
+# Import and integrate construction hazards
+from nic_utils import fetch_construction_sites
+print("Fetching construction sites from 511on.ca...")
+
+# Create a compiled regex pattern for delay extraction
+import re
+delay_pattern = re.compile(r'up to (\d+) minutes')
+
+try:
+    # Get all API data in parallel
+    api_data = fetch_all_api_data()
+    construction_hazards = []
+    
+    if api_data.get('construction'):
+        for site in api_data['construction']:
+            desc = str(site.get('Description', '')).lower()
+            
+            # Extract delay using compiled regex
+            delay = 0
+            match = delay_pattern.search(desc)
+            if match:
+                try:
+                    delay = int(match.group(1))
+                except ValueError:
+                    pass
+        
+        # Scale buffer radius based on delay (max 3km = 0.027 degrees)
+        # 10 min = 1km, 30+ min = 3km, linear scale between
+        radius = min(0.009 + (delay - 10) * (0.027 - 0.009) / 20, 0.027) if delay >= 10 else 0.009
+        
+        construction_hazards.append({
+            "Hazards": f"Construction ({delay}min delay)",
+            "Latitude": site.geometry.y,
+            "Longitude": site.geometry.x,
+            "geometry": site.geometry
+        })
+except Exception as e:
+    pass
+    construction_hazards = []
+
+# Integrate traffic as hazards
+traffic_hazards = []
+for _, row in traffic_df.iterrows():
+    try:
+        lat = float(row["CORRESPONDING LAT"])
+        lon = float(row["corr long"])
+        if not (pd.isna(lat) or pd.isna(lon)):
+            traffic_hazards.append({
+                "Hazards": "Traffic",
+                "Latitude": lat,
+                "Longitude": lon,
+                "geometry": Point(lon, lat)
+            })
+    except Exception:
+        continue
+
+if traffic_hazards:
+    traffic_df2 = pd.DataFrame(traffic_hazards)
+    hazards_df = pd.concat([hazards_df, traffic_df2], ignore_index=True)
+
+# Add construction hazards
+if construction_hazards:
+    construction_df = pd.DataFrame(construction_hazards)
+    hazards_df = pd.concat([hazards_df, construction_df], ignore_index=True)
+
+# Calculate all buffer radii at once using vectorized operations
+hazards_df['buffer_radius'] = hazards_df['Hazards'].apply(hazard_radius)
+
+# Build buffers efficiently in chunks
+def chunk_buffer(geometries, radii, chunk_size=100):
+    buffers = []
+    for i in range(0, len(geometries), chunk_size):
+        chunk_geoms = geometries[i:i + chunk_size]
+        chunk_radii = radii[i:i + chunk_size]
+        buffers.extend([g.buffer(r) for g, r in zip(chunk_geoms, chunk_radii)])
+    return buffers
+
+hazard_buffers = chunk_buffer(hazards_df['geometry'].values, hazards_df['buffer_radius'].values)
+
+# Process drifting hazards from parallel API fetch
+try:
+    if api_data.get('road_conditions'):
+        drifting_hazards = fetch_drifting_poor_segments()
+        if drifting_hazards:
+            drifting_buffers = chunk_buffer([h for h in drifting_hazards], [0.009] * len(drifting_hazards))
+            hazard_buffers.extend(drifting_buffers)
+except Exception as e:
+    pass
+    drifting_hazards = []
+
+# Create union of buffers in chunks to improve performance
+def chunked_union(geometries, chunk_size=100):
+    unions = []
+    for i in range(0, len(geometries), chunk_size):
+        chunk = geometries[i:i + chunk_size]
+        unions.append(unary_union(chunk))
+    return unary_union(unions)
+
+hazard_union = chunked_union(hazard_buffers)
 
 # Inflate length for edges whose midpoint is inside any hazard buffer so
 # pathfinding will tend to avoid them.
@@ -76,6 +270,43 @@ for u, v, key, data in G.edges(keys=True, data=True):
 # --- Map and base routes -------------------------------------------------
 m = folium.Map(location=[sites.geometry.y.mean(), sites.geometry.x.mean()], zoom_start=5)
 
+# Add markers for poor road segments (after map creation)
+try:
+    for seg in drifting_hazards:
+        if seg.length > 0:
+            mid = seg.interpolate(0.5, normalized=True)
+            folium.CircleMarker(
+                location=[mid.y, mid.x],
+                radius=7,
+                color="grey",
+                fill=True,
+                fill_opacity=0.7,
+                popup="Poor Road Condition - Drifting"
+            ).add_to(m)
+            # Add a line to show the affected road segment
+            coords = [(y, x) for x, y in zip(*seg.xy)]
+            folium.PolyLine(
+                coords,
+                color="grey",
+                weight=4,
+                opacity=0.6,
+                popup="Poor Road Condition"
+            ).add_to(m)
+except Exception as e:
+    pass
+
+# Add truck rest area markers
+try:
+    rest_areas = fetch_truck_rest_areas()
+    for area in rest_areas:
+        folium.Marker(
+            location=[area["lat"], area["lon"]],
+            popup=area["name"],
+            icon=folium.Icon(color="purple", icon="bed", prefix="fa")
+        ).add_to(m)
+except Exception as e:
+    pass
+
 def draw_route_and_get_nodes(G, origin_node, dest_node, color="blue", tooltip=None):
     route = nx.astar_path(G, origin_node, dest_node, heuristic=lambda a, b: haversine(a, b, G), weight="length")
     coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in route]
@@ -83,10 +314,12 @@ def draw_route_and_get_nodes(G, origin_node, dest_node, color="blue", tooltip=No
     return route
 
 # Draw all routes and keep route nodes if needed later
+route_colors = {"Bruce": "red", "Pickering": "orange", "Darlington": "purple", "Chalk River": "darkgreen"}
 routes = {}
 for name, origin_node in origins.items():
     tooltip = f"{name} to Ignace"
-    routes[name] = draw_route_and_get_nodes(G, origin_node, ignace, color="blue", tooltip=tooltip)
+    color = route_colors.get(name, "blue")
+    routes[name] = draw_route_and_get_nodes(G, origin_node, ignace, color=color, tooltip=tooltip)
 
 # Add nuclear site markers
 for _, site in sites.iterrows():
@@ -115,15 +348,33 @@ for i, row in hazards_df.iterrows():
             hazard_affected_by[i].append(origin_name)
 
 for i, row in hazards_df.iterrows():
-    affected = hazard_affected_by.get(i, [])
-    lat = row["Latitude"]
-    lon = row["Longitude"]
-    if affected:
-        popup = f"{row['Hazards']} - affects routes: {', '.join(affected)}"
-        folium.CircleMarker(location=[lat, lon], radius=8, color="red", fill=True, fill_opacity=0.8, popup=popup).add_to(m)
-        print(popup)
-    else:
-        folium.CircleMarker(location=[lat, lon], radius=4, color="orange", fill=True, fill_opacity=0.6, popup=row['Hazards']).add_to(m)
+    # Only plot hazards within 15km of each route
+    for name in origins:
+        route_buffer = route_lines[name].buffer(0.135)
+        if route_buffer.intersects(row["geometry"]):
+            affected = hazard_affected_by.get(i, [])
+            lat = row["Latitude"]
+            lon = row["Longitude"]
+            hazard_type = row["Hazards"]
+            color_map = {
+                "Fire": "orange",
+                "Flood": "blue",
+                "Traffic": "red",
+                "PoorRoad": "grey",
+                "Poor Road": "grey"
+            }
+            color = None
+            for k, v in color_map.items():
+                if k.lower() in hazard_type.lower():
+                    color = v
+                    break
+            if not color:
+                color = "black"
+            if affected:
+                popup = f"{hazard_type} - affects routes: {', '.join(affected)}"
+                folium.CircleMarker(location=[lat, lon], radius=8, color=color, fill=True, fill_opacity=0.8, popup=popup).add_to(m)
+            else:
+                folium.CircleMarker(location=[lat, lon], radius=4, color=color, fill=True, fill_opacity=0.6, popup=hazard_type).add_to(m)
 
 
 # --- Gas stations (load once) -------------------------------------------
@@ -140,17 +391,25 @@ max_distance_m = 1_200_000  # 1200 km
 def find_refuelling_station(G, origin_node, dest_node, gas_df, max_distance_m):
     """Return (truck_stop_name, graph_node, dist_m) or None.
 
-    Logic: if the origin->destination shortest path is shorter than max_distance_m
-    then no refuelling is necessary (returns None). Otherwise, find gas stations
-    reachable from the origin within max_distance_m and pick the furthest one
-    (greedy so it maximizes distance before refuelling).
+    Logic: 
+    1. Find optimal rest stop near but before 13-hour driving limit (1170 km)
+    2. Prefer stops between 11-13 hours for efficiency
+    3. Must stop before 13-hour limit for legal compliance
+    4. After rest, driver can continue the journey
     """
     try:
         od_dist = nx.shortest_path_length(G, origin_node, dest_node, weight="length")
     except nx.NetworkXNoPath:
         return None
 
-    if od_dist < max_distance_m:
+    # Calculate distances for legal driving limits (max 13 hours at 90 km/h)
+    avg_speed_kmh = 90
+    min_rest_dist = 11 * avg_speed_kmh * 1000  # 990 km in meters
+    max_legal_dist = 13 * avg_speed_kmh * 1000  # 1170 km in meters - legal limit
+    ideal_rest_dist = 12.5 * avg_speed_kmh * 1000  # 1125 km - optimal rest point
+        
+    # If total distance is less than minimum rest time, no rest stop needed
+    if od_dist < min_rest_dist:
         return None
 
     reachable = []
@@ -158,16 +417,41 @@ def find_refuelling_station(G, origin_node, dest_node, gas_df, max_distance_m):
         station_node = row["graph_node"]
         try:
             d = nx.shortest_path_length(G, origin_node, station_node, weight="length")
-            if d <= max_distance_m:
-                reachable.append((row["Truck stop"], station_node, d))
+            # Calculate driving hours to this station
+            hours = (d / 1000) / avg_speed_kmh
+            
+            # Only consider stops before legal limit
+            if d <= max_legal_dist:
+                # Score based on how close to ideal rest time (12.5 hours)
+                # Lower score is better
+                time_score = abs(12.5 - hours)
+                
+                # Bonus for stops in the sweet spot (11-13 hours)
+                if min_rest_dist <= d <= max_legal_dist:
+                    time_score -= 1.0
+                    
+                reachable.append((row["Truck stop"], station_node, d, time_score))
         except nx.NetworkXNoPath:
             continue
 
     if not reachable:
+        # Fall back to original distance-based logic
+        reachable = []
+        for _, row in gas_df.iterrows():
+            station_node = row["graph_node"]
+            try:
+                d = nx.shortest_path_length(G, origin_node, station_node, weight="length")
+                if d <= max_distance_m:
+                    reachable.append((row["Truck stop"], station_node, d, float('inf')))
+            except nx.NetworkXNoPath:
+                continue
+
+    if not reachable:
         return None
 
-    # Choose the furthest reachable station from the origin (max distance)
-    return max(reachable, key=lambda x: x[2])
+    # Choose the station closest to ideal rest time (lowest time_score)
+    best_stop = min(reachable, key=lambda x: x[3])
+    return best_stop[:3]  # Return only name, node, and distance (strip time_score)
 
 
 # --- Apply refuelling selection for every origin route ------------------
@@ -178,31 +462,22 @@ for name, origin_node in origins.items():
     if station:
         stop_name, stop_node, dist_m = station
         chosen_stations[name] = station
-        # Mark chosen station (distinct color per origin)
-        # find dataframe row for coordinates
         row = gas_stations_df[gas_stations_df["graph_node"] == stop_node].iloc[0]
+        hours = (dist_m / 1000) / 90
+        # Highlight chosen rest stop with a large star marker
         folium.Marker(
             location=[row["Latitude"], row["Longitude"]],
-            popup=f"{name} - Chosen Gas Station: {stop_name} ({dist_m/1000:.1f} km)",
-            icon=folium.Icon(color=colors.get(name, "red"), icon="gas-pump", prefix="fa")
+            popup=f"{name} - Rest Stop & Gas Station: {stop_name}\nDistance: {dist_m/1000:.1f} km\nDriving Time: {hours:.1f} hours",
+            icon=folium.Icon(color=route_colors.get(name, "red"), icon="star", prefix="fa")
         ).add_to(m)
-        print(f"{name} - Chosen gas station: {stop_name} at {dist_m/1000:.2f} km")
-    else:
-        print(f"{name} - No refuelling required or no reachable gas station within {max_distance_m/1000:.0f} km")
 
 
 # Add generic markers for all gas stations (lighter, so chosen ones stand out)
-for _, row in gas_stations_df.iterrows():
-    folium.CircleMarker(
-        location=[row["Latitude"], row["Longitude"]],
-        radius=3,
-        color="green",
-        fill=True,
-        fill_opacity=0.6,
-        popup=f"⛽ Gas Station: {row['Truck stop']}"
-    ).add_to(m)
+pass  # Removed generic gas station markers
 
 
 # Save map
+import time
+end_time = time.time()
 m.save("Optimized_Nuclear_Route.html")
-print("Map saved as Optimized_Nuclear_Route.html")
+print(f"Map saved as Optimized_Nuclear_Route.html. Total runtime: {end_time - start_time:.1f} seconds")
